@@ -80,22 +80,42 @@ class UpdaterPlugin : JavaPlugin() {
 
 //        localFile.createNewFile()
         val url = URI("https://github.com/devoirr/Bitwigs/blob/main/BitwigsCore/build/libs/Bitwigs.jar").toURL()
-        val out = BufferedOutputStream(FileOutputStream(localFile))
-        val conn = url.openConnection()
+        var inputStream: InputStream? = null
+        var out: BufferedOutputStream? = null
 
-        val inputStream = conn.getInputStream()
-        val buffer = ByteArray(1024)
+        try {
+            // Open the connection to the URL
+            val conn = url.openConnection()
 
-        var numRead = inputStream.read(buffer)
-        while (numRead != -1) {
-            out.write(buffer, 0, numRead)
-            numRead = inputStream.read(buffer)
+            // Open input stream from the URL
+            inputStream = conn.getInputStream()
+
+            // Ensure the directory exists
+            localFile.parentFile?.mkdirs()
+
+            // Create output stream to write the file
+            out = BufferedOutputStream(FileOutputStream(localFile))
+
+            // Read and write the file in chunks
+            val buffer = ByteArray(1024)
+            var numRead = inputStream.read(buffer)
+            while (numRead != -1) {
+                out.write(buffer, 0, numRead)
+                numRead = inputStream.read(buffer)
+            }
+
+            // Ensure everything is written to the file
+            out.flush()
+
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        } finally {
+            // Close streams if they were opened
+            inputStream?.close()
+            out?.close()
         }
-
-        inputStream?.close()
-        out.close()
-
-        return true
     }
 
 }

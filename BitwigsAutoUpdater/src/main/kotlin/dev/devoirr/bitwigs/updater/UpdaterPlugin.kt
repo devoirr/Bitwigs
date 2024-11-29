@@ -21,14 +21,14 @@ class UpdaterPlugin: JavaPlugin() {
         try {
             input = URI("https://raw.githubusercontent.com/devoirr/Bitwigs/refs/heads/main/version.txt").toURL().openStream()
         } catch (e: Exception) {
-            Bukkit.getLogger().info("Failed to check for latest Bitwigs version.")
+            logger.warning("Failed to check for latest Bitwigs version.")
             e.printStackTrace()
         }
 
         try {
             latest = IOUtils.readLines(input, "UTF-8")[0]
         } catch (e: Exception) {
-            Bukkit.getLogger().info("Failed to check for latest Bitwigs version.")
+            logger.warning("Failed to check for latest Bitwigs version.")
             e.printStackTrace()
         } finally {
             IOUtils.closeQuietly(input)

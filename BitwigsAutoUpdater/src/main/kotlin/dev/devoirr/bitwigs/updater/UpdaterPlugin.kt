@@ -8,18 +8,17 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.net.URI
-import java.util.*
-import kotlin.math.log
 import kotlin.math.min
 
-class UpdaterPlugin: JavaPlugin() {
+class UpdaterPlugin : JavaPlugin() {
 
     override fun onEnable() {
 
         var input: InputStream? = null
         var latest = "Unknown"
         try {
-            input = URI("https://raw.githubusercontent.com/devoirr/Bitwigs/refs/heads/main/version.txt").toURL().openStream()
+            input = URI("https://raw.githubusercontent.com/devoirr/Bitwigs/refs/heads/main/version.txt").toURL()
+                .openStream()
         } catch (e: Exception) {
             logger.warning("Failed to check for latest Bitwigs version.")
             e.printStackTrace()
@@ -41,7 +40,7 @@ class UpdaterPlugin: JavaPlugin() {
         logger.info("Current version: $currentVersion")
         logger.info("Latest Bitwigs version: $latest")
 
-        val outdated = true //isOutdated(currentVersion, latest)
+        val outdated = isOutdated(currentVersion, latest)
 
         if (!outdated)
             return
@@ -79,7 +78,7 @@ class UpdaterPlugin: JavaPlugin() {
             localFile.delete()
         }
 
-        localFile.createNewFile()
+//        localFile.createNewFile()
         val url = URI("https://github.com/devoirr/Bitwigs/blob/main/BitwigsCore/build/libs/Bitwigs.jar").toURL()
         val out = BufferedOutputStream(FileOutputStream(localFile))
         val conn = url.openConnection()

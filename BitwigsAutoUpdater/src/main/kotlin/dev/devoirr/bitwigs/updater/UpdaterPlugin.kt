@@ -5,7 +5,6 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStream
 import java.net.URI
-import kotlin.math.log
 
 class UpdaterPlugin: JavaPlugin() {
 

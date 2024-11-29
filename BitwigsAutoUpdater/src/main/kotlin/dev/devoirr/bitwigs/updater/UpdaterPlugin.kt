@@ -3,6 +3,7 @@ package dev.devoirr.bitwigs.updater
 import org.apache.commons.io.IOUtils
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 import java.io.InputStream
 import java.net.URI
 import kotlin.math.min
@@ -36,7 +37,12 @@ class UpdaterPlugin: JavaPlugin() {
         logger.info("Current version: $currentVersion")
         logger.info("Latest Bitwigs version: $latest")
 
-        logger.info("Outdated: ${isOutdated(currentVersion, latest)}")
+        val outdated = isOutdated(currentVersion, latest)
+
+        if (!outdated)
+            return
+
+
 
     }
 
@@ -55,6 +61,11 @@ class UpdaterPlugin: JavaPlugin() {
 
         return false
 
+    }
+
+    private fun downloadUpdate(): Boolean {
+        val localFile = File("plugins/Bitwigs.jar")
+        return true
     }
 
 }

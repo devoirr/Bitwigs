@@ -1,0 +1,5 @@
+
+name: BitwigsUpdater
+main: dev.devoirr.bitwigs.updater.UpdaterPlugin
+version: 1.0.0
+api-version: "1.21"

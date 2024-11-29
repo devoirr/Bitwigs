@@ -1,3 +1,3 @@
 
 ./gradlew BitwigsCore:reobfJar
-./gradlew BitwigsAutoUpdater:reobfJar
+./gradlew BitwigsAutoUpdater:shadowJar

@@ -5,6 +5,7 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStream
 import java.net.URI
+import kotlin.math.log
 
 class UpdaterPlugin: JavaPlugin() {
 
@@ -32,8 +33,8 @@ class UpdaterPlugin: JavaPlugin() {
         val corePlugin = Bukkit.getPluginManager().getPlugin("Bitwigs") ?: return
         val currentVersion = corePlugin.pluginMeta.version
 
-        Bukkit.getLogger().info("Current version: $currentVersion")
-        Bukkit.getLogger().info("Latest version: $latest")
+        logger.info("Current version: $currentVersion")
+        logger.info("Latest Bitwigs version: $latest")
 
     }
 

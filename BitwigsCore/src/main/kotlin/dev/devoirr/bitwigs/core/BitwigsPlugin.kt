@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class BitwigsPlugin: JavaPlugin() {
 
     override fun onEnable() {
-        Bukkit.getLogger().info("Enabled Bitwigs!")
+        print("Enabled Bitwigs!")
     }
 
 }

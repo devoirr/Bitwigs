@@ -41,7 +41,7 @@ class UpdaterPlugin: JavaPlugin() {
         logger.info("Current version: $currentVersion")
         logger.info("Latest Bitwigs version: $latest")
 
-        val outdated = isOutdated(currentVersion, latest)
+        val outdated = true //isOutdated(currentVersion, latest)
 
         if (!outdated)
             return

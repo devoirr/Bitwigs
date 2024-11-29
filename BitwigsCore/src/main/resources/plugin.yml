@@ -1,5 +1,4 @@
-
 name: Bitwigs
 main: dev.devoirr.bitwigs.core.BitwigsPlugin
-version: "1.0.2"
+version: "1.0.3"
 api-version: "1.21"

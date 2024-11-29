@@ -5,6 +5,7 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStream
 import java.net.URI
+import kotlin.math.min
 
 class UpdaterPlugin: JavaPlugin() {
 
@@ -34,6 +35,25 @@ class UpdaterPlugin: JavaPlugin() {
 
         logger.info("Current version: $currentVersion")
         logger.info("Latest Bitwigs version: $latest")
+
+        logger.info("Outdated: ${isOutdated(currentVersion, latest)}")
+
+    }
+
+    private fun isOutdated(current: String, latest: String): Boolean {
+
+        val currentArgs = current.split(".")
+        val latestArgs = latest.split(".")
+
+        val size = min(latestArgs.size, currentArgs.size)
+
+        for (i in 0 until size) {
+            if (latestArgs[i] > currentArgs[i]) {
+                return true
+            }
+        }
+
+        return false
 
     }
 

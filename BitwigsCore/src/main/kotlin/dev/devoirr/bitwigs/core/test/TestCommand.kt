@@ -24,17 +24,31 @@ class TestCommand : BukkitCommand("test") {
 
         testMenu.addPermanentButton(
             MenuButton(
-                itemStack = { _ -> ItemStack(Material.GRAY_STAINED_GLASS_PANE) },
-                action = {}
+                itemStack = { _ -> ItemStack(Material.RED_STAINED_GLASS_PANE) },
+                action = { event ->
+                    testMenu.previousPage()
+                    testMenu.open(event.whoClicked as Player)
+                }
             ),
-            45, 46, 47, 48, 49, 50, 51, 52, 53
+            45, 46, 47, 48
         )
 
-        Material.entries.forEach { material ->
+        testMenu.addPermanentButton(
+            MenuButton(
+                itemStack = { _ -> ItemStack(Material.GREEN_STAINED_GLASS_PANE) },
+                action = { event ->
+                    testMenu.nextPage()
+                    testMenu.open(event.whoClicked as Player)
+                }
+            ),
+            50, 51, 52, 53
+        )
+
+        Material.entries.filter { it.isItem }.forEach { material ->
             testMenu.addFillerItem(
                 MenuButton(
                     itemStack = { _ -> ItemStack(material) },
-                    action = { }
+                    action = { e -> e.whoClicked.inventory.addItem(ItemStack(material)) }
                 )
             )
         }

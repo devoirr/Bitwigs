@@ -8,6 +8,7 @@ import dev.devoirr.bitwigs.core.menu.session.MenuSession
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.InventoryClickEvent
 import java.util.*
 
 class Menu {
@@ -21,12 +22,20 @@ class Menu {
 
     private val pages = mutableListOf<MenuPage>()
 
-    var currentPage = 0
+    private var currentPage = 0
 
     fun addPermanentButton(button: MenuButton, vararg slots: Int) {
         slots.forEach {
             permanentButtons[it] = button
         }
+    }
+
+    fun nextPage() {
+        currentPage = (currentPage + 1).coerceAtMost(pages.size - 1)
+    }
+
+    fun previousPage() {
+        currentPage = (currentPage - 1).coerceAtLeast(0)
     }
 
     fun addFillerItem(button: MenuButton) {
@@ -54,7 +63,8 @@ class Menu {
 
             val currentPage = pages[currentPage]
             parameters.fillerSlots.forEachIndexed { index, slot ->
-                inventory.setItem(slot, currentPage.list[index].itemStack(player))
+                if (currentPage.list.size > index)
+                    inventory.setItem(slot, currentPage.list[index].itemStack(player))
             }
 
         }
@@ -62,7 +72,26 @@ class Menu {
         /* Permanent buttons */
         permanentButtons.forEach { (slot, button) -> inventory.setItem(slot, button.itemStack(player)) }
 
+        val session = MenuSession(player, this, System.currentTimeMillis())
+        menuSessionMap[player.uniqueId] = session
+
         player.openInventory(inventory)
+
+    }
+
+    fun handleClick(event: InventoryClickEvent) {
+
+        val slot = event.slot
+
+        if (slot in permanentButtons.keys) {
+            permanentButtons[slot]?.action?.let { it(event) }
+            return
+        }
+
+        if (slot in parameters.fillerSlots) {
+            val button = pages[currentPage].list[parameters.fillerSlots.indexOf(slot)]
+            button.action(event)
+        }
 
     }
 

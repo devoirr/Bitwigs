@@ -79,7 +79,8 @@ class UpdaterPlugin : JavaPlugin() {
         }
 
 //        localFile.createNewFile()
-        val url = URI("https://github.com/devoirr/Bitwigs/blob/main/BitwigsCore/build/libs/Bitwigs.jar").toURL()
+        val url =
+            URI("https://github.com/devoirr/Bitwigs/raw/refs/heads/main/BitwigsCore/build/libs/Bitwigs.jar").toURL()
         var inputStream: InputStream? = null
         var out: BufferedOutputStream? = null
 

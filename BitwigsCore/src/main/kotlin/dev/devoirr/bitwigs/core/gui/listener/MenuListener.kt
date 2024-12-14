@@ -1,6 +1,6 @@
-package dev.devoirr.bitwigs.core.menu.listener
+package dev.devoirr.bitwigs.core.gui.listener
 
-import dev.devoirr.bitwigs.core.menu.Menu
+import dev.devoirr.bitwigs.core.gui.Menu
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

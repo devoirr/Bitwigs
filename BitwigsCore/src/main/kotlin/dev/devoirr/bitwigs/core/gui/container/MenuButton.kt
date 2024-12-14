@@ -1,4 +1,4 @@
-package dev.devoirr.bitwigs.core.menu.container
+package dev.devoirr.bitwigs.core.gui.container
 
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent

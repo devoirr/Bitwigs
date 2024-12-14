@@ -1,16 +1,19 @@
 package dev.devoirr.bitwigs.core
 
-import dev.devoirr.bitwigs.core.menu.listener.MenuListener
-import dev.devoirr.bitwigs.core.test.TestCommand
+import co.aikar.commands.PaperCommandManager
+import dev.devoirr.bitwigs.core.gui.listener.MenuListener
 import org.bukkit.plugin.java.JavaPlugin
 
 class BitwigsPlugin : JavaPlugin() {
 
+    private lateinit var commandManager: PaperCommandManager
+
     override fun onEnable() {
         print("Enabled Bitwigs!")
 
+        commandManager = PaperCommandManager(this)
+
         server.pluginManager.registerEvents(MenuListener(), this)
-        server.commandMap.register("test", TestCommand())
     }
 
 }

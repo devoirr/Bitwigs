@@ -1,10 +1,10 @@
-package dev.devoirr.bitwigs.core.menu
+package dev.devoirr.bitwigs.core.gui
 
 import com.google.gson.Gson
-import dev.devoirr.bitwigs.core.menu.container.MenuButton
-import dev.devoirr.bitwigs.core.menu.container.MenuPage
-import dev.devoirr.bitwigs.core.menu.container.MenuParameters
-import dev.devoirr.bitwigs.core.menu.session.MenuSession
+import dev.devoirr.bitwigs.core.gui.container.MenuButton
+import dev.devoirr.bitwigs.core.gui.container.MenuPage
+import dev.devoirr.bitwigs.core.gui.container.MenuParameters
+import dev.devoirr.bitwigs.core.gui.session.MenuSession
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player

@@ -1,4 +1,4 @@
-package dev.devoirr.bitwigs.core.menu.container
+package dev.devoirr.bitwigs.core.gui.container
 
 data class MenuPage(val list: MutableList<MenuButton> = mutableListOf(), var itemsPerPage: Int) {
 

@@ -1,0 +1,40 @@
+chair_1:
+  item: # имя lore и тд указывать не обязательно, но если указано то без них предмет не приймет
+    material: 'leather_horse_armor'
+    name: 'Стул'
+    model-data: "25-27,13,11"
+  cancel-drop: false
+  hitbox:
+    height: 2
+    width: 1
+    depth: 1
+  sitting:
+    allowed: true
+    chair-y-offset: 0.2
+  transformation:
+    width: 1.1
+    height: 0.7
+    depth: 1.0
+  break-time:
+    default: 20 # В тиках
+    per-item: # для каждого предмета отдельно
+      diamond_pickaxe: 10
+  break-damage:
+    default: 2
+    per-item: # для каждого предмета отдельно
+      diamond_pickaxe: 1
+  effects:
+    break:
+      sound: 'block.note.pling'
+      particle: 'hui'
+    place:
+      sound: 'block.note.pling'
+      particle: 'hui'
+    hit:
+      sound: 'block.note.pling'
+      particle: 'hui'
+  rotatable: true # Разрешает вращение предмета с нажатием шифта
+  explosive: # Можно ли взорвать зажигалкой
+    allow: true
+    power: 4 # Сила взрыва
+    time: 100 # сколько времени предмет будет мигать прежде чем взорваться (в тиках)

@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     compileOnly("org.purpurmc.purpur", "purpur-api", "1.21-R0.1-SNAPSHOT")
+    implementation("com.j256.ormlite:ormlite-jdbc:6.1")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
 }
 

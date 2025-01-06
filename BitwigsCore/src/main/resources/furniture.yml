@@ -8,13 +8,13 @@ chair_1:
     height: 2
     width: 1
     depth: 1
+  scale:
+    height: 1
+    width: 1
+    depth: 1
   sitting:
     allowed: true
     chair-y-offset: 0.2
-  transformation:
-    width: 1.1
-    height: 0.7
-    depth: 1.0
   break-time:
     default: 20 # В тиках
     per-item: # для каждого предмета отдельно
@@ -33,8 +33,8 @@ chair_1:
     hit:
       sound: 'block.note.pling'
       particle: 'hui'
+    step:
+      sound: 'block.note.pling'
+      particle: 'hui'
   rotatable: true # Разрешает вращение предмета с нажатием шифта
-  explosive: # Можно ли взорвать зажигалкой
-    allow: true
-    power: 4 # Сила взрыва
-    time: 100 # сколько времени предмет будет мигать прежде чем взорваться (в тиках)
+  light: 10

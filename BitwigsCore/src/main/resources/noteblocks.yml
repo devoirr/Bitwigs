@@ -1,0 +1,33 @@
+#
+# Notes: 1-8
+# Instruments: https://jd.papermc.io/paper/1.21.4/org/bukkit/Instrument.html
+# Powered: true / false
+#
+# Сегодня - кент, а завтра - мент.
+#
+
+#blocks:
+#  324: "3;banjo;ВИШНЁВАЯ СЕМЁРКА НЕОНОВЫЕ ФАРЫ;true" # modeldata: note;instrument;name;powered
+
+blocks:
+  wood:
+    blocks:
+      324: "3;banjo;Дерево;true" # modeldata: note;instrument;name;powered
+      333: "4;banjo;Дерево;true"
+    drop-when-breaking: # Можно ломать чем угодно
+      - ALL
+    breaking-time:
+      default: 60 # в тиках
+      per-item:
+        DIAMOND_AXE: 20
+  stone:
+    blocks:
+      444: "4;banjo;Камень;true"
+    drop-when-breaking: # Можно ломать только этим
+      - DIAMOND_PICKAXE
+      - NETHERITE_PICKAXE
+    breaking-time:
+      default: 120
+      per-item:
+        DIAMOND_PICKAXE: 20
+        NETHERITE_PICKAXE: 10

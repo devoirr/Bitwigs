@@ -1,0 +1,21 @@
+furniture:
+  enabled: true
+  database:
+    type: SQLITE
+    file-name: "furniture"
+
+economy:
+  enabled: true
+  database:
+    type: SQLITE
+    file-name: "economy"
+
+warps:
+  enabled: true
+  name-regex: "^[A-Za-z_]{3,10}$" # в названии только англ буквы и _, от 3 до 10 символов
+
+chat:
+  enabled: true
+
+noteblocks:
+  enabled: true

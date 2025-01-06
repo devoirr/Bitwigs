@@ -9,13 +9,15 @@ class Config(private val file: File) {
     private var handle: FileConfiguration
 
     init {
-        if (!file.exists())
+        if (!file.exists()) {
+            file.mkdirs()
             file.createNewFile()
+        }
         handle = YamlConfiguration.loadConfiguration(file)
     }
 
     fun get() = handle
-    
+
     fun save() {
         handle.save(file)
     }

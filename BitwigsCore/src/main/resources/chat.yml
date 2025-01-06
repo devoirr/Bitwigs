@@ -1,0 +1,20 @@
+default-channel: local
+min-length: 1
+max-length: 100
+
+# Параметры для каналов:
+#   format - Обязательный. Плейсхолдеры поддерживаются. <message> заменится на сообщение игрока.
+#   symbol - Обязательный. По этому символу будет определяться формат. Если символа нет - будет выбран default-channel.
+#   range - Необязательный. Если не установлен сообщение увидят все, если установлен на -1 - только в мире игрока, иначе, только в указанном радиусе.
+#   permission - Необязательный. Если установлен сообщение увидят только те у кого есть право. Можно комбинировать с range.
+channels:
+  local:
+    format: ' &bL | &f%player_name%: <message>'
+    range: 100
+  global:
+    symbol: '!'
+    format: ' &6G | &f%player_name%: <message>'
+  admin:
+    symbol: '|'
+    permission: 'bitwigs.chat.staff'
+    format: ' &cS | &f%player_name%: <message>'

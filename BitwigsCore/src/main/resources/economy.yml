@@ -1,0 +1,14 @@
+database:
+  type: sqlite
+  mysql:
+
+
+currencies:
+  dollars:
+    symbol: "$"
+    newbie: 10.0
+    global: false
+  rubles:
+    symbol: "₽"
+    newbie: 0.0
+    global: true

@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/BitwigsAutoUpdater" />
             <option value="$PROJECT_DIR$/BitwigsCore" />
+            <option value="$PROJECT_DIR$/BitwigsFurniture" />
           </set>
         </option>
       </GradleProjectSettings>

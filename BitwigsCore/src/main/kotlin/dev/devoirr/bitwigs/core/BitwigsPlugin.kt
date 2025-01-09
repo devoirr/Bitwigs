@@ -4,15 +4,12 @@ import co.aikar.commands.Locales
 import co.aikar.commands.MessageType
 import co.aikar.commands.PaperCommandManager
 import com.github.retrooper.packetevents.PacketEvents
-import dev.devoirr.bitwigs.core.block.furniture.FurnitureManager
-import dev.devoirr.bitwigs.core.block.noteblocks.NoteblocksManager
 import dev.devoirr.bitwigs.core.chat.ChatManager
 import dev.devoirr.bitwigs.core.config.Config
 import dev.devoirr.bitwigs.core.economy.EconomyManager
 import dev.devoirr.bitwigs.core.gui.listener.MenuListener
 import dev.devoirr.bitwigs.core.messages.Messages
 import dev.devoirr.bitwigs.core.messages.ReloadMessagesCommand
-import dev.devoirr.bitwigs.core.tasks.TaskManager
 import dev.devoirr.bitwigs.core.test.TestCommand
 import dev.devoirr.bitwigs.core.warps.WarpsManager
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
@@ -24,20 +21,23 @@ import java.util.*
 
 class BitwigsPlugin : JavaPlugin() {
 
+    companion object {
+        lateinit var instance: BitwigsPlugin
+            private set
+    }
+
     lateinit var commandManager: PaperCommandManager
 
-    lateinit var taskManager: TaskManager
-
-    var furnitureManager: FurnitureManager? = null
     var economyManager: EconomyManager? = null
     var warpManager: WarpsManager? = null
     var chatManager: ChatManager? = null
-    var noteblocksManager: NoteblocksManager? = null
 
     lateinit var uniqueServerId: String
 
     override fun onEnable() {
         print("Enabled Bitwigs!")
+
+        instance = this
 
         saveConfigFiles()
 
@@ -48,19 +48,6 @@ class BitwigsPlugin : JavaPlugin() {
         commandManager.setFormat(MessageType.ERROR, ChatColor.WHITE, ChatColor.RED, ChatColor.RED, ChatColor.RED)
         commandManager.setFormat(MessageType.SYNTAX, ChatColor.WHITE, ChatColor.GRAY, ChatColor.GRAY, ChatColor.GRAY)
         commandManager.setFormat(MessageType.INFO, ChatColor.WHITE, ChatColor.GRAY, ChatColor.GRAY)
-
-        taskManager = TaskManager(this)
-
-        if (config.getBoolean("furniture.enabled", false)) {
-            try {
-                furnitureManager = FurnitureManager(this)
-                furnitureManager!!.onEnable()
-            } catch (e: Exception) {
-                logger.info("Failed to enable furniture...")
-                e.printStackTrace()
-                furnitureManager = null
-            }
-        }
 
         if (config.getBoolean("economy.enabled", false)) {
             try {
@@ -92,17 +79,6 @@ class BitwigsPlugin : JavaPlugin() {
                 logger.info("Failed to enable chat...")
                 e.printStackTrace()
                 chatManager = null
-            }
-        }
-
-        if (config.getBoolean("noteblocks.enabled", false)) {
-            try {
-                noteblocksManager = NoteblocksManager(this)
-                noteblocksManager!!.onEnable()
-            } catch (e: Exception) {
-                logger.info("Failed to enabled noteblocks...")
-                e.printStackTrace()
-                noteblocksManager = null
             }
         }
 
@@ -149,10 +125,8 @@ class BitwigsPlugin : JavaPlugin() {
     }
 
     override fun onDisable() {
-        furnitureManager?.onDisable()
         economyManager?.onDisable()
         chatManager?.onDisable()
-        noteblocksManager?.onDisable()
 
         PacketEvents.getAPI().terminate()
     }

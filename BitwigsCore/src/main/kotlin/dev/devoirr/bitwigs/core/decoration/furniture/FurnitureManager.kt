@@ -1,5 +1,7 @@
 package dev.devoirr.bitwigs.core.decoration.furniture
 
+import com.github.retrooper.packetevents.PacketEvents
+import com.github.retrooper.packetevents.event.PacketListenerPriority
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.config.Config
 import dev.devoirr.bitwigs.core.database.DatabaseInfo
@@ -8,6 +10,7 @@ import dev.devoirr.bitwigs.core.decoration.HardnessModifier
 import dev.devoirr.bitwigs.core.decoration.InteractionType
 import dev.devoirr.bitwigs.core.decoration.furniture.database.FurnitureDatabase
 import dev.devoirr.bitwigs.core.decoration.furniture.listener.FurniturePlaceListener
+import dev.devoirr.bitwigs.core.decoration.furniture.listener.FurniturePlayerListener
 import dev.devoirr.bitwigs.core.decoration.furniture.listener.FurnitureSitListener
 import dev.devoirr.bitwigs.core.decoration.furniture.listener.FurnitureStepListener
 import dev.devoirr.bitwigs.core.decoration.furniture.placed.PlacedFurnitureHolder
@@ -16,6 +19,7 @@ import dev.devoirr.bitwigs.core.decoration.model.Tool
 import dev.devoirr.bitwigs.core.toComponent
 import org.bukkit.Bukkit
 import org.bukkit.block.Block
+import org.bukkit.event.HandlerList
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitRunnable
 import java.io.File
@@ -36,6 +40,8 @@ class FurnitureManager : DecorationMechanic {
     private val stepListener = FurnitureStepListener(this)
     private val sitListener = FurnitureSitListener(this)
 
+    private val playerListener = FurniturePlayerListener(this)
+
     fun onEnable() {
         this.loadFurnitureTypes()
 
@@ -50,11 +56,18 @@ class FurnitureManager : DecorationMechanic {
         plugin.server.pluginManager.registerEvents(placeListener, plugin)
         plugin.server.pluginManager.registerEvents(stepListener, plugin)
         plugin.server.pluginManager.registerEvents(sitListener, plugin)
+        plugin.server.pluginManager.registerEvents(playerListener, plugin)
+
+        PacketEvents.getAPI().eventManager.registerListener(playerListener, PacketListenerPriority.HIGH)
     }
 
     fun onDisable() {
         placedFurnitureHolder.saveChangesToDatabase()
         placedFurnitureHolder.removeSeats()
+
+        HandlerList.unregisterAll(placeListener)
+        HandlerList.unregisterAll(stepListener)
+        HandlerList.unregisterAll(sitListener)
     }
 
     private fun loadFurnitureTypes() {

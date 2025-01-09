@@ -1,20 +1,21 @@
 package dev.devoirr.bitwigs.core
 
 import co.aikar.commands.Locales
-import co.aikar.commands.MessageType
 import co.aikar.commands.PaperCommandManager
 import com.github.retrooper.packetevents.PacketEvents
 import dev.devoirr.bitwigs.core.chat.ChatManager
 import dev.devoirr.bitwigs.core.config.Config
+import dev.devoirr.bitwigs.core.decoration.furniture.sitting.Sitting
 import dev.devoirr.bitwigs.core.economy.EconomyManager
 import dev.devoirr.bitwigs.core.gui.listener.MenuListener
 import dev.devoirr.bitwigs.core.messages.Messages
 import dev.devoirr.bitwigs.core.messages.ReloadMessagesCommand
+import dev.devoirr.bitwigs.core.sound.SoundInfo
 import dev.devoirr.bitwigs.core.test.TestCommand
 import dev.devoirr.bitwigs.core.warps.WarpsManager
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.*
@@ -29,8 +30,8 @@ class BitwigsPlugin : JavaPlugin() {
     lateinit var commandManager: PaperCommandManager
 
     var economyManager: EconomyManager? = null
-    var warpManager: WarpsManager? = null
-    var chatManager: ChatManager? = null
+    private var warpManager: WarpsManager? = null
+    private var chatManager: ChatManager? = null
 
     lateinit var uniqueServerId: String
 
@@ -45,9 +46,9 @@ class BitwigsPlugin : JavaPlugin() {
 
         commandManager = PaperCommandManager(this)
         commandManager.locales.setDefaultLocale(Locales.RUSSIAN)
-        commandManager.setFormat(MessageType.ERROR, ChatColor.WHITE, ChatColor.RED, ChatColor.RED, ChatColor.RED)
-        commandManager.setFormat(MessageType.SYNTAX, ChatColor.WHITE, ChatColor.GRAY, ChatColor.GRAY, ChatColor.GRAY)
-        commandManager.setFormat(MessageType.INFO, ChatColor.WHITE, ChatColor.GRAY, ChatColor.GRAY)
+
+        ConfigurationSerialization.registerClass(SoundInfo::class.java)
+        ConfigurationSerialization.registerClass(Sitting::class.java)
 
         if (config.getBoolean("economy.enabled", false)) {
             try {
@@ -132,7 +133,7 @@ class BitwigsPlugin : JavaPlugin() {
     }
 
     override fun onLoad() {
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this))
         PacketEvents.getAPI().load()
     }
 

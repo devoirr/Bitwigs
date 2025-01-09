@@ -3,13 +3,8 @@ chair_1:
     material: 'leather_horse_armor'
     name: 'Стул'
     model-data: "25-27,13,11"
-  cancel-drop: false
   hitbox:
     height: 2
-    width: 1
-    depth: 1
-  scale:
-    height: 1
     width: 1
     depth: 1
   sitting:
@@ -17,21 +12,33 @@ chair_1:
     chair-y-offset: 0.2
   hardness: 5
   tool-to-break: AXE # PICKAXE, AXE, SHOVEL, HOE.
-  tools-to-drop: [ AXE, PICKAXE, DIAMOND_SWORD ] # Будет выпадать при ломании этими предметами. Если не указать будет выпадать всегда. Если указать [] не будет выпадать. Можно указывать как вид инструмента, так и айди.
+  tools-to-drop: [ AXE, PICKAXE, DIAMOND_SWORD ] # Будет выпадать при ломании этими предметами. Если не указать - не будет выпадать никогда. Если добавить ALL будет выпадать всегда.
   allow-place-on: # Можно не указывать
     - STONE
   effects:
     break:
-      sound: 'block.note.pling'
+      sound:
+        sound: 'block.note.pling'
+        volume: 0.5
+        pitch: 1
       particle: 'hui'
     place:
-      sound: 'block.note.pling'
+      sound:
+        sound: 'block.note.pling'
+        volume: 0.5
+        pitch: 1
       particle: 'hui'
     hit:
-      sound: 'block.note.pling'
+      sound:
+        sound: 'block.note.pling'
+        volume: 0.5
+        pitch: 1
       particle: 'hui'
     step:
-      sound: 'block.note.pling'
+      sound:
+        sound: 'block.note.pling'
+        volume: 0.5
+        pitch: 1
       particle: 'hui'
   rotatable: true # Разрешает вращение предмета с нажатием шифта
   light: 10

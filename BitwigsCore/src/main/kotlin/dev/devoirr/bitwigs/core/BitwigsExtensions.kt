@@ -1,7 +1,5 @@
 package dev.devoirr.bitwigs.core
 
-import dev.devoirr.bitwigs.core.block.noteblocks.model.type.NoteblockSubType
-import dev.devoirr.bitwigs.core.block.noteblocks.model.type.NoteblockType
 import dev.devoirr.bitwigs.core.util.ComponentUtility
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
@@ -189,10 +187,6 @@ fun ItemStack.hasMetaAndModelData(): Boolean {
     return this.hasItemMeta() && this.hasCustomModelData()
 }
 
-fun Pair<NoteblockType, NoteblockSubType>.type(): NoteblockType {
-    return this.first
-}
-
-fun Pair<NoteblockType, NoteblockSubType>.subType(): NoteblockSubType {
-    return this.second
+fun Location.centralize(): Location {
+    return this.clone().add(0.5, 0.5, 0.5)
 }

@@ -4,4 +4,3 @@ plugins {
 rootProject.name = "Bitwigs"
 include(":BitwigsCore")
 include(":BitwigsAutoUpdater")
-include("BitwigsFurniture")

@@ -15,14 +15,11 @@ chair_1:
   sitting:
     allowed: true
     chair-y-offset: 0.2
-  break-time:
-    default: 20 # В тиках
-    per-item: # для каждого предмета отдельно
-      diamond_pickaxe: 10
-  break-damage:
-    default: 2
-    per-item: # для каждого предмета отдельно
-      diamond_pickaxe: 1
+  hardness: 5
+  tool-to-break: AXE # PICKAXE, AXE, SHOVEL, HOE.
+  tools-to-drop: [ AXE, PICKAXE, DIAMOND_SWORD ] # Будет выпадать при ломании этими предметами. Если не указать будет выпадать всегда. Если указать [] не будет выпадать. Можно указывать как вид инструмента, так и айди.
+  allow-place-on: # Можно не указывать
+    - STONE
   effects:
     break:
       sound: 'block.note.pling'

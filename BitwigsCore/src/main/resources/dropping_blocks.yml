@@ -1,0 +1,23 @@
+# Предметы которые могут выпасть.
+# Добавление командой /db additem <id> <default_chance>, нужно держать предмет в руке.
+# <default_chance> это стандартный шанс выпадения, если не указан в конкретном блоке.
+items: { }
+
+types:
+  trash:
+    loot_time: 7 # Время которое занимает лутание (в секундах)
+    refill_time: 20 # Время которое занимает перезаполнение (в секундах)
+    refill_after_loots: 3 # После скольких лутаний надо перезаполнить
+    refill_effect:
+      particle: 'particle'
+      sound:
+        sound: 'block_note_pling'
+        volume: 1.0
+        pitch: 1.0
+    loot_effect:
+      particle: 'particle'
+      sound:
+        sound: 'block_note_pling'
+        volume: 1.0
+        pitch: 1.0
+    items: [ ]

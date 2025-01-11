@@ -1,9 +1,3 @@
-furniture:
-  enabled: true
-  database:
-    type: SQLITE
-    file-name: "furniture"
-
 economy:
   enabled: true
   database:
@@ -13,9 +7,15 @@ economy:
 warps:
   enabled: true
   name-regex: "^[A-Za-z_]{3,10}$" # в названии только англ буквы и _, от 3 до 10 символов
+  database:
+    type: SQLITE
+    file-name: "warps"
 
 chat:
   enabled: true
 
-noteblocks:
+frames:
+  enabled: true
+
+dropping_blocks:
   enabled: true

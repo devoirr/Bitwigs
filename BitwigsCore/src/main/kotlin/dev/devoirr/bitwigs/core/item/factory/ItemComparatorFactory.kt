@@ -22,7 +22,7 @@ class ItemComparatorFactory : Factory<ItemComparator> {
         return ItemComparator(material, modelDataList, displayName, lore)
     }
 
-    override fun write(section: ConfigurationSection) {
+    override fun write(item: ItemComparator, section: ConfigurationSection) {
         
     }
 }

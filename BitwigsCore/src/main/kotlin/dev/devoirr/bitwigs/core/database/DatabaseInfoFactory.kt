@@ -23,7 +23,7 @@ class DatabaseInfoFactory : Factory<DatabaseInfo> {
         return DatabaseInfo(type, "jdbc:mysql://$host:$port/$database?user=$user&password=$password")
     }
 
-    override fun write(section: ConfigurationSection) {
+    override fun write(item: DatabaseInfo, section: ConfigurationSection) {
         TODO("Not yet implemented")
     }
 }

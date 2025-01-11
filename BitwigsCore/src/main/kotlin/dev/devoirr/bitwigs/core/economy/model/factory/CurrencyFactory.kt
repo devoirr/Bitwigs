@@ -15,7 +15,7 @@ class CurrencyFactory : Factory<Currency> {
         return Currency(key, symbol, newbie, global)
     }
 
-    override fun write(section: ConfigurationSection) {
-        
+    override fun write(item: Currency, section: ConfigurationSection) {
+        TODO("Not yet implemented")
     }
 }

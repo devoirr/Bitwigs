@@ -5,11 +5,13 @@ import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.chat.listener.ChatListener
 import dev.devoirr.bitwigs.core.chat.model.ChatChannel
 import dev.devoirr.bitwigs.core.config.Config
+import dev.devoirr.bitwigs.core.module.Loadable
 import org.bukkit.event.HandlerList
 import java.io.File
 
-class ChatManager(private val plugin: BitwigsPlugin) {
+class ChatManager : Loadable {
 
+    private val plugin = BitwigsPlugin.instance
     private val config = Config(File(plugin.dataFolder, "chat.yml"))
 
     lateinit var chatRegex: Regex
@@ -22,7 +24,11 @@ class ChatManager(private val plugin: BitwigsPlugin) {
 
     private lateinit var listener: ChatListener
 
-    fun onEnable() {
+    override fun getName(): String {
+        return "chat"
+    }
+
+    override fun onEnable() {
 
         chatRegex = Regex("[а-яА-ЯёЁA-Za-z0-9-~!@#\$%^&*()<>/_+=-{}|';:.,\\[\"\\] ]+\$")
 
@@ -51,7 +57,7 @@ class ChatManager(private val plugin: BitwigsPlugin) {
         plugin.server.pluginManager.registerEvents(listener, plugin)
     }
 
-    fun onDisable() {
+    override fun onDisable() {
         HandlerList.unregisterAll(listener)
     }
 

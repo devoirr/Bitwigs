@@ -1,6 +1,5 @@
 package dev.devoirr.bitwigs.core
 
-import dev.devoirr.bitwigs.core.decoration.model.Tool
 import dev.devoirr.bitwigs.core.util.ComponentUtility
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
@@ -190,8 +189,4 @@ fun ItemStack.hasMetaAndModelData(): Boolean {
 
 fun Location.centralize(): Location {
     return this.clone().add(0.5, 0.5, 0.5)
-}
-
-fun ItemStack.getTool(): Tool? {
-    return Tool.entries.firstOrNull { it.isThisTool(this) }
 }

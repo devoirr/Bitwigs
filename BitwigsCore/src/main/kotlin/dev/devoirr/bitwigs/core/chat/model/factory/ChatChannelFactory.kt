@@ -16,7 +16,7 @@ class ChatChannelFactory : Factory<ChatChannel> {
         return ChatChannel(format, range, symbol, permission)
     }
 
-    override fun write(section: ConfigurationSection) {
-        TODO("Not yet implemented")
+    override fun write(item: ChatChannel, section: ConfigurationSection) {
+        
     }
 }

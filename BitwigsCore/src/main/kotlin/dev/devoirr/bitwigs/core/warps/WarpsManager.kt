@@ -3,12 +3,12 @@ package dev.devoirr.bitwigs.core.warps
 import dev.devoirr.bitwigs.core.BitwigsFactory
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.database.DatabaseInfo
+import dev.devoirr.bitwigs.core.module.Loadable
 import dev.devoirr.bitwigs.core.warps.model.Warp
 
-class WarpsManager(private val plugin: BitwigsPlugin) {
+class WarpsManager : Loadable {
 
-    var isEnabled = false
-        private set
+    private val plugin = BitwigsPlugin.instance
 
     lateinit var databaseInfo: DatabaseInfo
     lateinit var database: WarpsDatabase
@@ -17,9 +17,11 @@ class WarpsManager(private val plugin: BitwigsPlugin) {
 
     lateinit var nameRegex: Regex
 
-    fun onEnable() {
-        isEnabled = true
+    override fun getName(): String {
+        return "warps"
+    }
 
+    override fun onEnable() {
         databaseInfo =
             BitwigsFactory.databaseInfoFactory.parse(plugin.config.getConfigurationSection("warps.database")!!)
         database = WarpsDatabase(this)
@@ -27,8 +29,14 @@ class WarpsManager(private val plugin: BitwigsPlugin) {
         nameRegex = Regex(plugin.config.getString("warps.name-regex", "^[A-Za-z_]{3,10}\$")!!)
 
         plugin.commandManager.registerCommand(WarpCommand(this))
+        plugin.commandManager.commandCompletions.registerCompletion("warps") {
+            getAllWarpNames()
+        }
 
         loadWarps()
+    }
+
+    override fun onDisable() {
     }
 
     private fun loadWarps() {

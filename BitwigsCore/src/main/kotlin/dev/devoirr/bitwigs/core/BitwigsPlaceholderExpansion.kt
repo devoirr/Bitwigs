@@ -31,22 +31,21 @@ class BitwigsPlaceholderExpansion(private val plugin: BitwigsPlugin) : Placehold
             return null
 
         if (params == "balance") {
-            val economyManager = plugin.economyManager ?: return ""
 
-            return economyManager.databaseManager.readPlayerAccount(player.uniqueId)
-                .getBalancesString(economyManager)
+            val economyService = BitwigsServices.economyService ?: return ""
+            return economyService.getPlayerBalanceString(economyService.getPlayerAccount(player.uniqueId))
+
         } else if (params.startsWith("balance_")) {
-            val economyManager = plugin.economyManager ?: return ""
+            val economyService = BitwigsServices.economyService ?: return ""
 
             val currencyName = params.split("_")[1]
-            val balance =
-                economyManager.databaseManager.readPlayerAccount(player.uniqueId).getMoney(currencyName)
+            val balance = economyService.getPlayerAccount(player.uniqueId).getMoney(currencyName)
 
             if (params.endsWith("_pure")) {
                 return balance.toString()
             }
 
-            val currency = economyManager.getCurrency(currencyName) ?: return null
+            val currency = economyService.getCurrency(currencyName) ?: return null
             return "$balance${currency.symbol}"
         }
 

@@ -19,3 +19,6 @@ frames:
 
 dropping_blocks:
   enabled: true
+  database:
+    type: SQLITE
+    file-name: "dropping_blocks"

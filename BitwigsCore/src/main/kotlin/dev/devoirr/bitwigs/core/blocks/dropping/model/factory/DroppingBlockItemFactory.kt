@@ -1,6 +1,6 @@
-package dev.devoirr.bitwigs.core.blocks.dropping.factory
+package dev.devoirr.bitwigs.core.blocks.dropping.model.factory
 
-import dev.devoirr.bitwigs.core.blocks.dropping.DroppingBlockItem
+import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockItem
 import dev.devoirr.bitwigs.core.util.factory.Factory
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection

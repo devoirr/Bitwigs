@@ -1,11 +1,10 @@
-package dev.devoirr.bitwigs.core.blocks.dropping.database
+package dev.devoirr.bitwigs.core.blocks.dropping.model.database
 
 import com.j256.ormlite.dao.Dao
 import com.j256.ormlite.dao.DaoManager
 import com.j256.ormlite.jdbc.JdbcConnectionSource
 import com.j256.ormlite.table.TableUtils
 import dev.devoirr.bitwigs.core.blocks.dropping.DroppingBlocksManager
-import dev.devoirr.bitwigs.core.economy.model.database.AccountRow
 
 class DroppingBlocksDatabase(manager: DroppingBlocksManager) {
 
@@ -13,7 +12,7 @@ class DroppingBlocksDatabase(manager: DroppingBlocksManager) {
 
     init {
         val connectionSource = JdbcConnectionSource(manager.databaseInfo.connectionString)
-        TableUtils.createTableIfNotExists(connectionSource, AccountRow::class.java)
+        TableUtils.createTableIfNotExists(connectionSource, PlacedDroppingBlockRow::class.java)
         droppingBlockDao = DaoManager.createDao(connectionSource, PlacedDroppingBlockRow::class.java)
     }
 

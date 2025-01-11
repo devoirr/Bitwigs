@@ -1,4 +1,4 @@
-package dev.devoirr.bitwigs.core.blocks.dropping
+package dev.devoirr.bitwigs.core.blocks.dropping.model
 
 import dev.devoirr.bitwigs.core.randomizer.ItemWithChance
 import org.bukkit.inventory.ItemStack

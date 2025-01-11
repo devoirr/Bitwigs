@@ -1,9 +1,9 @@
-package dev.devoirr.bitwigs.core.blocks.dropping.factory
+package dev.devoirr.bitwigs.core.blocks.dropping.model.factory
 
 import dev.devoirr.bitwigs.core.BitwigsFactory
 import dev.devoirr.bitwigs.core.BitwigsServices
-import dev.devoirr.bitwigs.core.blocks.dropping.DroppingBlockItem
-import dev.devoirr.bitwigs.core.blocks.dropping.DroppingBlockType
+import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockItem
+import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockType
 import dev.devoirr.bitwigs.core.util.factory.Factory
 import org.bukkit.Bukkit
 import org.bukkit.configuration.ConfigurationSection
@@ -21,9 +21,19 @@ class DroppingBlockTypeFactory : Factory<DroppingBlockType> {
         val lootEffect = if (section.getKeys(false).contains("loot_effect"))
             BitwigsFactory.blockEffectFactory.parse(section.getConfigurationSection("loot_effect")!!) else null
 
+        val canBeBroken = section.getBoolean("can_be_broken", false)
+
         val items = mutableListOf<DroppingBlockItem>()
         if (!section.getKeys(false).contains("items")) {
-            return DroppingBlockType(lootTime, refillTime, refillAfterLoots, lootEffect, refillEffect, emptyList())
+            return DroppingBlockType(
+                lootTime,
+                refillTime,
+                refillAfterLoots,
+                lootEffect,
+                refillEffect,
+                canBeBroken,
+                emptyList()
+            )
         }
 
         try {
@@ -50,7 +60,7 @@ class DroppingBlockTypeFactory : Factory<DroppingBlockType> {
             e.printStackTrace()
         }
 
-        return DroppingBlockType(lootTime, refillTime, refillAfterLoots, lootEffect, refillEffect, items)
+        return DroppingBlockType(lootTime, refillTime, refillAfterLoots, lootEffect, refillEffect, canBeBroken, items)
     }
 
     override fun write(item: DroppingBlockType, section: ConfigurationSection) {

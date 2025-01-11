@@ -1,8 +1,8 @@
 package dev.devoirr.bitwigs.core
 
 import dev.devoirr.bitwigs.core.blocks.BlockEffectFactory
-import dev.devoirr.bitwigs.core.blocks.dropping.factory.DroppingBlockItemFactory
-import dev.devoirr.bitwigs.core.blocks.dropping.factory.DroppingBlockTypeFactory
+import dev.devoirr.bitwigs.core.blocks.dropping.model.factory.DroppingBlockItemFactory
+import dev.devoirr.bitwigs.core.blocks.dropping.model.factory.DroppingBlockTypeFactory
 import dev.devoirr.bitwigs.core.chat.model.factory.ChatChannelFactory
 import dev.devoirr.bitwigs.core.database.DatabaseInfoFactory
 import dev.devoirr.bitwigs.core.economy.model.factory.CurrencyFactory

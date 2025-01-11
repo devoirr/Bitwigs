@@ -3,7 +3,8 @@ package dev.devoirr.bitwigs.core.blocks.dropping
 import dev.devoirr.bitwigs.core.BitwigsFactory
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.blocks.dropping.command.DroppingBlocksCommand
-import dev.devoirr.bitwigs.core.blocks.dropping.database.DroppingBlocksDatabase
+import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockType
+import dev.devoirr.bitwigs.core.blocks.dropping.model.database.DroppingBlocksDatabase
 import dev.devoirr.bitwigs.core.config.Config
 import dev.devoirr.bitwigs.core.database.DatabaseInfo
 import dev.devoirr.bitwigs.core.module.Loadable
@@ -23,10 +24,17 @@ class DroppingBlocksManager : Loadable {
     lateinit var databaseInfo: DatabaseInfo
     lateinit var database: DroppingBlocksDatabase
 
+    private val loadedTypes = mutableMapOf<String, DroppingBlockType>()
+
     override fun onEnable() {
         databaseInfo =
             BitwigsFactory.databaseInfoFactory.parse(plugin.config.getConfigurationSection("dropping_blocks.database")!!)
         database = DroppingBlocksDatabase(this)
+
+        for (typeKey in config.get().getConfigurationSection("types")!!.getKeys(false)) {
+            loadedTypes[typeKey] =
+                BitwigsFactory.droppingBlockTypeFactory.parse(config.get().getConfigurationSection("types.$typeKey")!!)
+        }
 
         database.getAll().forEach { row ->
             row.location.toLocation().block.setMetadata("dropping_block", FixedMetadataValue(plugin, row.type))
@@ -36,5 +44,9 @@ class DroppingBlocksManager : Loadable {
     }
 
     override fun onDisable() {
+    }
+
+    fun getType(typeName: String): DroppingBlockType? {
+        return loadedTypes[typeName]
     }
 }

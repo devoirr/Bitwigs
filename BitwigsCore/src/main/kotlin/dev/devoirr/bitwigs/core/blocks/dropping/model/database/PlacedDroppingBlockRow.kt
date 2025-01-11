@@ -1,4 +1,4 @@
-package dev.devoirr.bitwigs.core.blocks.dropping.database
+package dev.devoirr.bitwigs.core.blocks.dropping.model.database
 
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable

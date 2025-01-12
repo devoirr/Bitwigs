@@ -4,7 +4,7 @@ import co.aikar.commands.Locales
 import co.aikar.commands.PaperCommandManager
 import com.github.retrooper.packetevents.PacketEvents
 import dev.devoirr.bitwigs.core.config.Config
-import dev.devoirr.bitwigs.core.gui.listener.MenuListener
+import dev.devoirr.bitwigs.core.gui.MenuListener
 import dev.devoirr.bitwigs.core.messages.Messages
 import dev.devoirr.bitwigs.core.messages.ReloadMessagesCommand
 import dev.devoirr.bitwigs.core.module.ModuleCenter
@@ -40,8 +40,6 @@ class BitwigsPlugin : JavaPlugin() {
         commandManager = PaperCommandManager(this)
         commandManager.locales.setDefaultLocale(Locales.RUSSIAN)
 
-        server.pluginManager.registerEvents(MenuListener(), this)
-
         this.registerCompletions()
         this.commandManager.registerCommand(ReloadMessagesCommand(this))
 
@@ -50,9 +48,13 @@ class BitwigsPlugin : JavaPlugin() {
         PacketEvents.getAPI().init()
 
         moduleCenter.loadModules()
+
+        MenuListener().register()
+        commandManager.registerCommand(MenuTestCommand())
     }
 
     private fun registerCompletions() {
+        /* Later add vanished players support */
         commandManager.commandCompletions.registerCompletion("visible") {
             Bukkit.getOnlinePlayers().map { it.name }
         }

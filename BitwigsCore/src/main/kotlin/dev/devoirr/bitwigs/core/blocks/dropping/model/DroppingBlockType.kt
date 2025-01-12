@@ -9,5 +9,8 @@ data class DroppingBlockType(
     val lootEffect: BlockEffect?,
     val refillEffect: BlockEffect?,
     val canBeBroken: Boolean,
+    val lootBars: Int,
+    val refillBars: Int,
+    val hologramYOffset: Double,
     val items: List<DroppingBlockItem>
 )

@@ -2,13 +2,17 @@ package dev.devoirr.bitwigs.core.blocks.dropping
 
 import dev.devoirr.bitwigs.core.BitwigsFactory
 import dev.devoirr.bitwigs.core.BitwigsPlugin
+import dev.devoirr.bitwigs.core.BitwigsServices
 import dev.devoirr.bitwigs.core.blocks.dropping.command.DroppingBlocksCommand
+import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockItem
 import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockType
 import dev.devoirr.bitwigs.core.blocks.dropping.model.database.DroppingBlocksDatabase
 import dev.devoirr.bitwigs.core.config.Config
 import dev.devoirr.bitwigs.core.database.DatabaseInfo
 import dev.devoirr.bitwigs.core.module.Loadable
 import dev.devoirr.bitwigs.core.toLocation
+import org.bukkit.block.Block
+import org.bukkit.event.HandlerList
 import org.bukkit.metadata.FixedMetadataValue
 import java.io.File
 
@@ -26,24 +30,48 @@ class DroppingBlocksManager : Loadable {
 
     private val loadedTypes = mutableMapOf<String, DroppingBlockType>()
 
+    private val listener = DroppingBlocksListener(this)
+    private val items = mutableMapOf<String, DroppingBlockItem>()
+
     override fun onEnable() {
         databaseInfo =
             BitwigsFactory.databaseInfoFactory.parse(plugin.config.getConfigurationSection("dropping_blocks.database")!!)
         database = DroppingBlocksDatabase(this)
+
+        config.get().getConfigurationSection("items")?.getKeys(false)?.forEach { key ->
+            items[key] =
+                BitwigsFactory.droppingBlockItemFactory.parse(config.get().getConfigurationSection("items.$key")!!)
+        }
+
+        BitwigsServices.droppingBlocksSerivce = object : DroppingBlocksSerivce {
+            override fun getItem(id: String): DroppingBlockItem? {
+                return items[id]
+            }
+        }
 
         for (typeKey in config.get().getConfigurationSection("types")!!.getKeys(false)) {
             loadedTypes[typeKey] =
                 BitwigsFactory.droppingBlockTypeFactory.parse(config.get().getConfigurationSection("types.$typeKey")!!)
         }
 
+        var block: Block
         database.getAll().forEach { row ->
-            row.location.toLocation().block.setMetadata("dropping_block", FixedMetadataValue(plugin, row.type))
+            block = row.location.toLocation().block
+
+            block.setMetadata("dropping_block", FixedMetadataValue(plugin, row.type))
+            block.setMetadata("dropping_block_loots", FixedMetadataValue(plugin, 0))
         }
 
         plugin.commandManager.registerCommand(DroppingBlocksCommand(this))
+        plugin.commandManager.commandCompletions.registerCompletion("droppingblocktypes") {
+            loadedTypes.keys
+        }
+
+        plugin.server.pluginManager.registerEvents(listener, plugin)
     }
 
     override fun onDisable() {
+        HandlerList.unregisterAll(listener)
     }
 
     fun getType(typeName: String): DroppingBlockType? {

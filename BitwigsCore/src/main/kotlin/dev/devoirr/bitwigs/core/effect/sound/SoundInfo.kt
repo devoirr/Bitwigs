@@ -7,11 +7,19 @@ import org.bukkit.entity.Player
 class SoundInfo(private val name: String, private val volume: Float, private val pitch: Float) {
 
     fun play(player: Player) {
-        player.playSound(player, name, volume, pitch)
+        try {
+            player.playSound(player, name, volume, pitch)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun play(location: Location) {
-        location.world.playSound(location, name, volume, pitch)
+        try {
+            location.world.playSound(location, name, volume, pitch)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun play(block: Block) {

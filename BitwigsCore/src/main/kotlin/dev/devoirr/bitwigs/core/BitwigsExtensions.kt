@@ -1,6 +1,6 @@
 package dev.devoirr.bitwigs.core
 
-import dev.devoirr.bitwigs.core.util.ComponentUtility
+import dev.devoirr.bitwigs.core.util.TextUtility
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -16,7 +16,7 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
 fun String.toComponent() = LegacyComponentSerializer.legacyAmpersand().deserialize(this)
-fun List<String>.toComponent() = ComponentUtility.listOfStringToComponent(this)
+fun List<String>.toComponent() = TextUtility.listOfStringToComponent(this)
 
 fun Location.toString(block: Boolean): String {
     val stringBuilder = StringBuilder()

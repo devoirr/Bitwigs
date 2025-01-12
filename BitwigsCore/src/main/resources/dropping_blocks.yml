@@ -9,13 +9,17 @@ types:
     refill_time: 20 # Время которое занимает перезаполнение (в секундах)
     refill_after_loots: 3 # После скольких лутаний надо перезаполнить
     refill_effect:
-      particle: 'particle'
+      particle:
+        particle: 'none'
+        amount: 20
       sound:
         sound: 'block_note_pling'
         volume: 1.0
         pitch: 1.0
     loot_effect:
-      particle: 'particle'
+      particle:
+        particle: 'none'
+        amount: 20
       sound:
         sound: 'block_note_pling'
         volume: 1.0

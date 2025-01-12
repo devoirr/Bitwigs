@@ -22,6 +22,10 @@ class DroppingBlockTypeFactory : Factory<DroppingBlockType> {
             BitwigsFactory.blockEffectFactory.parse(section.getConfigurationSection("loot_effect")!!) else null
 
         val canBeBroken = section.getBoolean("can_be_broken", false)
+        val lootBars = section.getInt("loot_bars", 10)
+        val refillBars = section.getInt("refill_bars", 10)
+
+        val yOffset = section.getDouble("hologram_y_offset", 0.8)
 
         val items = mutableListOf<DroppingBlockItem>()
         if (!section.getKeys(false).contains("items")) {
@@ -32,6 +36,9 @@ class DroppingBlockTypeFactory : Factory<DroppingBlockType> {
                 lootEffect,
                 refillEffect,
                 canBeBroken,
+                lootBars,
+                refillBars,
+                yOffset,
                 emptyList()
             )
         }
@@ -47,11 +54,11 @@ class DroppingBlockTypeFactory : Factory<DroppingBlockType> {
 
             } else {
 
-                var itemId: String
-                for (chance in section.getConfigurationSection("items")!!.getKeys(false)) {
-                    itemId = section.getString("items.$chance")!!
+                var chance: Double
+                for (itemId in section.getConfigurationSection("items")!!.getKeys(false)) {
+                    chance = section.getDouble("items.$itemId")!!
                     BitwigsServices.droppingBlocksSerivce?.getItem(itemId)
-                        ?.let { items.add(it.copyWithChange(chance.toDouble())) }
+                        ?.let { items.add(it.copyWithChange(chance)) }
                 }
 
             }
@@ -60,7 +67,18 @@ class DroppingBlockTypeFactory : Factory<DroppingBlockType> {
             e.printStackTrace()
         }
 
-        return DroppingBlockType(lootTime, refillTime, refillAfterLoots, lootEffect, refillEffect, canBeBroken, items)
+        return DroppingBlockType(
+            lootTime,
+            refillTime,
+            refillAfterLoots,
+            lootEffect,
+            refillEffect,
+            canBeBroken,
+            lootBars,
+            refillBars,
+            yOffset,
+            items
+        )
     }
 
     override fun write(item: DroppingBlockType, section: ConfigurationSection) {

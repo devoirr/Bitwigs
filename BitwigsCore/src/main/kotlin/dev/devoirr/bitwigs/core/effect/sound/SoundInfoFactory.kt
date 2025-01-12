@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection
 class SoundInfoFactory : Factory<SoundInfo> {
 
     override fun parse(section: ConfigurationSection): SoundInfo {
-        val soundName = (section.getString("sound") ?: "none").uppercase()
+        val soundName = (section.getString("sound") ?: "none")
         val volume = section.getDouble("volume", 1.0)
         val pitch = section.getDouble("pitch", 1.0)
 

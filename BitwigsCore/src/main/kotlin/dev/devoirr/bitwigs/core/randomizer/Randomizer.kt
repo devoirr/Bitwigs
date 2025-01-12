@@ -5,7 +5,7 @@ import kotlin.random.Random
 class Randomizer<T : ItemWithChance>(private val list: List<T>) {
 
     fun chooseRandom(): T {
-        val sortByChance = list.sortedBy { it.getChance() }
+        val sortByChance = list.shuffled().sortedBy { it.getChance() }
         val maxChance = sortByChance.last().getChance()
 
         val chance = Random.nextInt(maxChance.toInt() + 1)

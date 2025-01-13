@@ -7,9 +7,16 @@ import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.blocks.dropping.DroppingBlocksManager
 import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockItem
 import dev.devoirr.bitwigs.core.blocks.dropping.model.database.PlacedDroppingBlockRow
+import dev.devoirr.bitwigs.core.gui.Menu
+import dev.devoirr.bitwigs.core.messages.Messages
+import dev.devoirr.bitwigs.core.toComponent
 import dev.devoirr.bitwigs.core.toString
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.bukkit.metadata.FixedMetadataValue
 
 @CommandAlias("droppingblocks|db")
@@ -26,13 +33,13 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         }
 
         if (section.getKeys(false).contains(id)) {
-            player.sendMessage("ID already used.")
+            Messages.COMMAND_DROPPING_BLOCKS_ID_ALREADY_USED.getError().sendTo(player)
             return
         }
 
         val itemStack = player.inventory.itemInMainHand
         if (itemStack.type == Material.AIR) {
-            player.sendMessage("You need to hold an item.")
+            Messages.COMMAND_DROPPING_BLOCKS_HOLD_SOMETHING.getError().sendTo(player)
             return
         }
 
@@ -42,7 +49,7 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         BitwigsFactory.droppingBlockItemFactory.write(item, itemSection)
 
         manager.config.save()
-        player.sendMessage("Saved successfully.")
+        Messages.COMMAND_DROPPING_BLOCKS_ITEM_SAVED.getInfo().sendTo(player)
     }
 
     @Subcommand("addblock")
@@ -54,6 +61,11 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         val targetBlock = player.getTargetBlockExact(5)
         if (targetBlock == null) {
             player.sendMessage("You must look at some block.")
+            return
+        }
+
+        if (targetBlock.hasMetadata("dropping_block")) {
+            player.sendMessage("This block is already dropping-block!")
             return
         }
 
@@ -70,13 +82,15 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         manager.database.write(placedDroppingBlockRow)
 
         targetBlock.setMetadata("dropping_block", FixedMetadataValue(BitwigsPlugin.instance, typeName))
+        targetBlock.setMetadata("dropping_block_loots", FixedMetadataValue(BitwigsPlugin.instance, 0))
 
         player.sendMessage("Successfully created.")
 
     }
 
-    @Subcommand("testblock")
-    fun testBlock(player: Player) {
+    @Subcommand("removeblock")
+    @Description("Удаляет дроп-блок")
+    fun removeBlock(player: Player, args: Array<String>) {
 
         val targetBlock = player.getTargetBlockExact(5)
         if (targetBlock == null) {
@@ -84,13 +98,84 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
             return
         }
 
-        if (targetBlock.hasMetadata("dropping_block")) {
-            player.sendMessage(targetBlock.getMetadata("dropping_block")[0].asString())
+        if (!targetBlock.hasMetadata("dropping_block")) {
+            player.sendMessage("This block is not dropping-block!")
             return
         }
 
-        player.sendMessage("Not a dropping block.")
+        val type = targetBlock.getMetadata("dropping_block")[0].asString()
 
+        targetBlock.removeMetadata("dropping_block", BitwigsPlugin.instance)
+        targetBlock.removeMetadata("dropping_block_loots", BitwigsPlugin.instance)
+
+        val row = PlacedDroppingBlockRow()
+        row.type = type
+        row.location = targetBlock.location.toString(block = true)
+
+        manager.database.delete(row)
+        player.sendMessage("Dropping block removed.")
+
+    }
+
+    @Subcommand("info")
+    fun info(player: Player, args: Array<String>) {
+
+        val targetBlock = player.getTargetBlockExact(5)
+        if (targetBlock == null) {
+            player.sendMessage("You must look at some block.")
+            return
+        }
+
+        if (!targetBlock.hasMetadata("dropping_block")) {
+            player.sendMessage("This is not a dropping block!")
+            return
+        }
+
+        val id = targetBlock.getMetadata("dropping_block")[0].asString()
+        val type = manager.getType(id) ?: return
+
+        val infoItem = buildItem(
+            Material.ITEM_FRAME,
+            Component.text(id).color(NamedTextColor.WHITE),
+            listOf(
+                "".toComponent(),
+                " &fВремя рефилла: &7${type.refillTime} &fсек.".toComponent(),
+                " &fВремя лута: &7${type.lootTime} &fсек.".toComponent(),
+                "".toComponent(),
+                " &fРефилл каждые &7${type.refillAfterLoots} &fлутов".toComponent(),
+                "".toComponent()
+            )
+        )
+
+        var menu = Menu().size(5 * 9).title("&0Информация о блоке".toComponent())
+            .item({ _: Player -> infoItem }, 4)
+
+        type.items.forEach {
+            menu = menu.addItem({ _: Player -> setLore(it.itemStack.clone(), it.defaultChance) }, { _, _ -> }, 18)
+        }
+
+        val glass = ItemStack(Material.GRAY_STAINED_GLASS_PANE)
+        (9..17).forEach { menu = menu.item({ _ -> glass }, { _, _ -> }, it) }
+
+        menu.openFor(player)
+    }
+
+    private fun buildItem(material: Material, name: Component, lore: List<Component>): ItemStack {
+        val itemStack = ItemStack(material)
+        val itemMeta = itemStack.itemMeta
+
+        itemMeta.displayName(name.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE))
+        itemMeta.lore(lore.map { it.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE) })
+
+        itemStack.itemMeta = itemMeta
+        return itemStack
+    }
+
+    private fun setLore(itemStack: ItemStack, chance: Double): ItemStack {
+        val meta = itemStack.itemMeta
+        meta.lore(listOf("".toComponent(), " &fШансы выпадения: &7$chance".toComponent(), "".toComponent()))
+        itemStack.itemMeta = meta
+        return itemStack
     }
 
 }

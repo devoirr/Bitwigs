@@ -2,6 +2,7 @@ package dev.devoirr.bitwigs.core.blocks.dropping.model.task
 
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockType
+import dev.devoirr.bitwigs.core.centralize
 import org.bukkit.block.Block
 import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.scheduler.BukkitRunnable
@@ -30,7 +31,7 @@ class RefillingTask(private val block: Block, private val type: DroppingBlockTyp
             block.removeMetadata("refilling", BitwigsPlugin.instance)
             block.setMetadata("dropping_block_loots", FixedMetadataValue(BitwigsPlugin.instance, 0))
         } else {
-            type.refillEffect?.playAt(block.location)
+            type.refillEffect?.playAt(block.location.clone().centralize())
         }
 
         updateHologram()

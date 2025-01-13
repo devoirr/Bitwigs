@@ -47,6 +47,9 @@ class DroppingBlocksListener(private val manager: DroppingBlocksManager) : Liste
     @EventHandler
     fun onClick(event: PlayerInteractEvent) {
 
+        if (!event.action.isRightClick)
+            return
+
         if (!event.hasBlock())
             return
 

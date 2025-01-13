@@ -50,7 +50,6 @@ class BitwigsPlugin : JavaPlugin() {
         moduleCenter.loadModules()
 
         MenuListener().register()
-        commandManager.registerCommand(MenuTestCommand())
     }
 
     private fun registerCompletions() {

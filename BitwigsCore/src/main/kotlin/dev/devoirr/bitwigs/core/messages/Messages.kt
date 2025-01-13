@@ -47,6 +47,10 @@ enum class Messages(private val path: String, private val defaultValue: String) 
     CHAT_MESSAGE_TOO_LONG("chat.too-long", "Максимальная длина сообщения: 100 символов."),
     CHAT_MESSAGE_TOO_SHORT("chat.too-short", "Минимальная длина сообщения: 1 символ"),
     CHAT_MESSAGE_REGEX("chat.regex", "В вашем сообщении содержатся запрещенные символы."),
+
+    COMMAND_DROPPING_BLOCKS_ID_ALREADY_USED("dropping-blocks.id-already-used", "Этот идентификатор уже используется!"),
+    COMMAND_DROPPING_BLOCKS_HOLD_SOMETHING("dropping-blocks.hold-something", "Вам нужно держать предмет в руке!"),
+    COMMAND_DROPPING_BLOCKS_ITEM_SAVED("dropping-blocks.item-saved", "Предмет успешно сохранён."),
     ;
 
     companion object {

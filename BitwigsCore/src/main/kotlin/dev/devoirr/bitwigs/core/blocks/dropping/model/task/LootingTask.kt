@@ -47,7 +47,7 @@ class LootingTask(private val block: Block, private val type: DroppingBlockType,
             }
 
         } else {
-            type.lootEffect?.playAt(block.location)
+            type.lootEffect?.playAt(block.location.clone().centralize())
         }
 
         updateHologram()

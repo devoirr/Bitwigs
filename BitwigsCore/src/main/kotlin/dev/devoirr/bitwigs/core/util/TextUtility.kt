@@ -3,6 +3,7 @@ package dev.devoirr.bitwigs.core.util
 import com.google.common.base.Strings
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.ChatColor
 
@@ -16,6 +17,7 @@ class TextUtility {
 
             if (list.size == 1)
                 return LegacyComponentSerializer.legacyAmpersand().deserialize(list[0])
+                    .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.NOT_SET)
 
             var component: Component = Component.empty()
             list.forEachIndexed { index, string ->
@@ -23,7 +25,10 @@ class TextUtility {
                     component = component.appendNewline()
                 }
 
-                component.append(LegacyComponentSerializer.legacyAmpersand().deserialize(string))
+                component.append(
+                    LegacyComponentSerializer.legacyAmpersand().deserialize(string)
+                        .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.NOT_SET)
+                )
             }
 
             return component

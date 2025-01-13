@@ -51,6 +51,31 @@ class Menu {
         return this
     }
 
+    fun addItem(itemStack: (Player) -> ItemStack, action: (InventoryClickEvent, Player) -> Unit): Menu {
+        val slots = (0..<size).filter { it !in items.keys }
+        if (slots.isEmpty())
+            return this
+
+        val slot = slots[0]
+        return item(itemStack, action, slot)
+    }
+
+    fun addItem(
+        itemStack: (Player) -> ItemStack,
+        action: (InventoryClickEvent, Player) -> Unit,
+        minimalSlot: Int
+    ): Menu {
+        val slots = (0..<size).filter { it !in items.keys }
+        if (slots.isEmpty())
+            return this
+
+        val slot = slots.firstOrNull { it >= minimalSlot }
+        if (slot == null)
+            return this
+        
+        return item(itemStack, action, slot)
+    }
+
     fun runHandlers(event: InventoryClickEvent) {
         handlers.forEach { it(event) }
     }

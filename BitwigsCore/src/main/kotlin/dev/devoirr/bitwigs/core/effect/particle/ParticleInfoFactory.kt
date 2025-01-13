@@ -9,13 +9,13 @@ class ParticleInfoFactory : Factory<ParticleInfo?> {
     override fun parse(section: ConfigurationSection): ParticleInfo? {
         val particleName = (section.getString("particle") ?: "none").uppercase()
         val particle = Particle.entries.firstOrNull { it.name == particleName } ?: return null
-
+            
         val amount = section.getInt("amount", 1)
 
         return ParticleInfo(particle, amount)
     }
 
     override fun write(item: ParticleInfo?, section: ConfigurationSection) {
-        
+
     }
 }

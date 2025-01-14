@@ -1,6 +1,5 @@
 package dev.devoirr.bitwigs.core.blocks.dropping
 
-import dev.devoirr.bitwigs.core.BitwigsFactory
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.BitwigsServices
 import dev.devoirr.bitwigs.core.blocks.dropping.command.DroppingBlocksCommand
@@ -35,12 +34,12 @@ class DroppingBlocksManager : Loadable {
 
     override fun onEnable() {
         databaseInfo =
-            BitwigsFactory.databaseInfoFactory.parse(plugin.config.getConfigurationSection("dropping_blocks.database")!!)
+            DatabaseInfo.parse(plugin.config.getConfigurationSection("dropping_blocks.database")!!)
         database = DroppingBlocksDatabase(this)
 
         config.get().getConfigurationSection("items")?.getKeys(false)?.forEach { key ->
             items[key] =
-                BitwigsFactory.droppingBlockItemFactory.parse(config.get().getConfigurationSection("items.$key")!!)
+                DroppingBlockItem.parse(config.get().getConfigurationSection("items.$key")!!)
         }
 
         BitwigsServices.droppingBlocksSerivce = object : DroppingBlocksSerivce {
@@ -51,7 +50,7 @@ class DroppingBlocksManager : Loadable {
 
         for (typeKey in config.get().getConfigurationSection("types")!!.getKeys(false)) {
             loadedTypes[typeKey] =
-                BitwigsFactory.droppingBlockTypeFactory.parse(config.get().getConfigurationSection("types.$typeKey")!!)
+                DroppingBlockType.parse(config.get().getConfigurationSection("types.$typeKey")!!)
         }
 
         var block: Block

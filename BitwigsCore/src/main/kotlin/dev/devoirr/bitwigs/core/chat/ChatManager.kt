@@ -1,6 +1,5 @@
 package dev.devoirr.bitwigs.core.chat
 
-import dev.devoirr.bitwigs.core.BitwigsFactory
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.chat.listener.ChatListener
 import dev.devoirr.bitwigs.core.chat.model.ChatChannel
@@ -42,7 +41,7 @@ class ChatManager : Loadable {
 
         var channel: ChatChannel
         for (channelName in config.get().getConfigurationSection("channels")!!.getKeys(false)) {
-            channel = BitwigsFactory.chatChannelFactory.parse(channelSection.getConfigurationSection(channelName)!!)
+            channel = ChatChannel.parse(channelSection.getConfigurationSection(channelName)!!)
             channels.add(channel)
 
             if (defaultChannelName == channelName) {

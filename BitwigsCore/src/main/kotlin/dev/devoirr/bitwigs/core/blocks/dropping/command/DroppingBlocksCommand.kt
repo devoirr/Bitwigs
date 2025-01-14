@@ -2,7 +2,6 @@ package dev.devoirr.bitwigs.core.blocks.dropping.command
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
-import dev.devoirr.bitwigs.core.BitwigsFactory
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.blocks.dropping.DroppingBlocksManager
 import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockItem
@@ -46,7 +45,7 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         val item = DroppingBlockItem(itemStack, chance)
         val itemSection = section.createSection(id)
 
-        BitwigsFactory.droppingBlockItemFactory.write(item, itemSection)
+        DroppingBlockItem.write(item, itemSection)
 
         manager.config.save()
         Messages.COMMAND_DROPPING_BLOCKS_ITEM_SAVED.getInfo().sendTo(player)

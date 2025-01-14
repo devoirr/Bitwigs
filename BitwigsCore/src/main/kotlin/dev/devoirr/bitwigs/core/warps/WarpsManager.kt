@@ -1,6 +1,5 @@
 package dev.devoirr.bitwigs.core.warps
 
-import dev.devoirr.bitwigs.core.BitwigsFactory
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.database.DatabaseInfo
 import dev.devoirr.bitwigs.core.module.Loadable
@@ -23,7 +22,7 @@ class WarpsManager : Loadable {
 
     override fun onEnable() {
         databaseInfo =
-            BitwigsFactory.databaseInfoFactory.parse(plugin.config.getConfigurationSection("warps.database")!!)
+            DatabaseInfo.parse(plugin.config.getConfigurationSection("warps.database")!!)
         database = WarpsDatabase(this)
 
         nameRegex = Regex(plugin.config.getString("warps.name-regex", "^[A-Za-z_]{3,10}\$")!!)

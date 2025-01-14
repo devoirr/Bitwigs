@@ -1,6 +1,5 @@
 package dev.devoirr.bitwigs.core.economy
 
-import dev.devoirr.bitwigs.core.BitwigsFactory
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.BitwigsServices
 import dev.devoirr.bitwigs.core.config.Config
@@ -37,12 +36,12 @@ class EconomyManager : Loadable {
 
     override fun onEnable() {
         databaseInfo =
-            BitwigsFactory.databaseInfoFactory.parse(plugin.config.getConfigurationSection("economy.database")!!)
+            DatabaseInfo.parse(plugin.config.getConfigurationSection("economy.database")!!)
         databaseManager = EconomyDatabaseManager(this)
 
         config.get().getConfigurationSection("currencies")?.getKeys(false)?.forEach {
             loadedCurrencies[it] =
-                BitwigsFactory.currencyFactory.parse(config.get().getConfigurationSection("currencies.$it")!!)
+                Currency.parse(config.get().getConfigurationSection("currencies.$it")!!)
         }
 
         plugin.commandManager.registerCommand(BalanceCommand(this))

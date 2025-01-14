@@ -24,4 +24,8 @@ types:
         sound: 'block_note_pling'
         volume: 1.0
         pitch: 1.0
+    loot_filler:
+      material: 'OBSIDIAN'
+    refill_filler:
+      material: 'BEDROCK'
     items: [ ]

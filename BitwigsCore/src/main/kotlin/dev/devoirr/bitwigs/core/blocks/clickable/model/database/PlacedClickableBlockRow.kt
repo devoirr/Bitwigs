@@ -1,12 +1,12 @@
-package dev.devoirr.bitwigs.core.blocks.dropping.model.database
+package dev.devoirr.bitwigs.core.blocks.clickable.model.database
 
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 
-@DatabaseTable(tableName = "dropping_blocks")
-class PlacedDroppingBlockRow {
+@DatabaseTable(tableName = "clickable_blocks")
+class PlacedClickableBlockRow {
 
-    @DatabaseField(canBeNull = false, id = true)
+    @DatabaseField(canBeNull = false)
     lateinit var location: String
 
     @DatabaseField(canBeNull = false)

@@ -1,0 +1,32 @@
+types:
+  block1:
+    permission: 'clickableblocks.type.block1' # Право нужное для использования блока.
+    permission-message: 'ㅅ У вас нет доступа к этой механике.'
+    effect: # Эффект при использовании блока. Не обязательно.
+      sound:
+        sound: 'block_note_pling'
+        volume: 0.3
+        pitch: 1.0
+      particle:
+        particle: 'dragon_breath'
+        amount: 5
+    commands:
+      - "player: spawn"
+      - "console: spawn %player_name%"
+    per-player-cooldown: # Задержка конкретному игроку. Не обязательно.
+      message: "ㅅ Блок будет доступен вам через &a<left> &fсек."
+      default: 30
+      groups:
+        vip: 20
+        deluxe: 10
+    global-cooldown: # Задержка на блок для всех игроков. Не обязательно.
+      replace:
+        material: NOTE_BLOCK
+        note: 1
+        instrument: BANJO
+        powered: true
+      message: "ㅅ Блок будет доступен через &a<left> &fсек."
+      default: 60
+      groups:
+        vip: 50
+        deluxe: 30

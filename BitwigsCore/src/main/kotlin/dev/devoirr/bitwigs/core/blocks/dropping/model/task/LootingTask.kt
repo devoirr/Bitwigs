@@ -1,10 +1,16 @@
 package dev.devoirr.bitwigs.core.blocks.dropping.model.task
 
 import dev.devoirr.bitwigs.core.BitwigsPlugin
+import dev.devoirr.bitwigs.core.blocks.ReplacedBlockData
+import dev.devoirr.bitwigs.core.blocks.ReplacedBlocks
 import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockType
 import dev.devoirr.bitwigs.core.centralize
 import dev.devoirr.bitwigs.core.randomizer.Randomizer
+import org.bukkit.Material
+import org.bukkit.Note
 import org.bukkit.block.Block
+import org.bukkit.block.data.BlockData
+import org.bukkit.block.data.type.NoteBlock
 import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
@@ -16,6 +22,9 @@ class LootingTask(private val block: Block, private val type: DroppingBlockType,
         block.setMetadata("looting", FixedMetadataValue(BitwigsPlugin.instance, "true"))
     }
 
+    private var defaultMaterial: Material = block.type
+    private var defaultBlockData: BlockData = block.blockData
+
     private var step: Int = 0
     private val uuid = UUID.randomUUID().toString()
     private val loots = block.getMetadata("dropping_block_loots")[0].asInt()
@@ -23,12 +32,38 @@ class LootingTask(private val block: Block, private val type: DroppingBlockType,
     override fun run() {
 
         if (createFunctionIfOnStart()) {
+
+            if (getType().lootFiller != null) {
+                val filler = getType().lootFiller!!
+
+                defaultMaterial = block.type
+                defaultBlockData = block.blockData
+
+                block.type = filler.material
+                if (block.type == Material.NOTE_BLOCK && filler.note != null && filler.isPowered != null && filler.instrument != null) {
+                    val data = block.blockData as NoteBlock
+
+                    data.note = Note(filler.note)
+                    data.instrument = filler.instrument
+                    data.isPowered = filler.isPowered
+
+                    ReplacedBlocks.add(ReplacedBlockData(block, defaultMaterial, defaultBlockData))
+                }
+            }
+
             step++
             return
         }
 
         if (step == steps + 1) {
             cancel()
+
+            if (getType().lootFiller != null) {
+                block.type = defaultMaterial
+                block.blockData = defaultBlockData
+
+                ReplacedBlocks.removeBlock(block)
+            }
 
             if (getType().items.isNotEmpty()) {
                 val drop = Randomizer(getType().items).chooseRandom()

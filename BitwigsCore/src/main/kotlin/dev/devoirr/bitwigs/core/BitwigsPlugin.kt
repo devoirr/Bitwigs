@@ -3,6 +3,7 @@ package dev.devoirr.bitwigs.core
 import co.aikar.commands.Locales
 import co.aikar.commands.PaperCommandManager
 import com.github.retrooper.packetevents.PacketEvents
+import dev.devoirr.bitwigs.core.blocks.ReplacedBlocks
 import dev.devoirr.bitwigs.core.config.Config
 import dev.devoirr.bitwigs.core.gui.MenuListener
 import dev.devoirr.bitwigs.core.messages.Messages
@@ -77,6 +78,7 @@ class BitwigsPlugin : JavaPlugin() {
     }
 
     override fun onDisable() {
+        ReplacedBlocks.onDisable()
         PacketEvents.getAPI().terminate()
     }
 

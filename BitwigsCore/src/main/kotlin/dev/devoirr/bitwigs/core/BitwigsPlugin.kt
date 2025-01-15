@@ -77,6 +77,7 @@ class BitwigsPlugin : JavaPlugin() {
         saveResource("economy.yml", false)
         saveResource("chat.yml", false)
         saveResource("dropping_blocks.yml", false)
+        saveResource("action_blocks.yml", false)
 
         if (!config.getKeys(false).contains("unique-server-id")) {
             config.set("unique-server-id", UUID.randomUUID().toString().split("-")[0])

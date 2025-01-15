@@ -203,3 +203,7 @@ fun Player.getGroup(): String {
 }
 
 fun Player.getLeft(cooldown: Cooldown): String? = CooldownManager.getLeft(this, cooldown)
+
+fun Player.addCooldown(cooldown: Cooldown) {
+    CooldownManager.addToPlayer(this, cooldown)
+}

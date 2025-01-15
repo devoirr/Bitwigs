@@ -1,9 +1,11 @@
 package dev.devoirr.bitwigs.core.blocks.dropping
 
 import dev.devoirr.bitwigs.core.BitwigsPlugin
+import dev.devoirr.bitwigs.core.blocks.dropping.model.database.PlacedDroppingBlockRow
 import dev.devoirr.bitwigs.core.blocks.dropping.model.event.DroppingBlockBreakEvent
 import dev.devoirr.bitwigs.core.blocks.dropping.model.event.DroppingBlockStartLootEvent
 import dev.devoirr.bitwigs.core.blocks.dropping.model.task.LootingTask
+import dev.devoirr.bitwigs.core.toString
 import org.bukkit.Bukkit
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
@@ -42,6 +44,15 @@ class DroppingBlocksListener(private val manager: DroppingBlocksManager) : Liste
             event.isCancelled = true
         }
 
+    }
+
+    @EventHandler
+    fun onDroppingBlockBreak(event: DroppingBlockBreakEvent) {
+        val row = PlacedDroppingBlockRow()
+        row.location = event.block.location.toString(block = true)
+        row.type = event.type.key
+
+        manager.database.delete(row)
     }
 
     @EventHandler

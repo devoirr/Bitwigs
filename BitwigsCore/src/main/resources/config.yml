@@ -22,3 +22,9 @@ dropping_blocks:
   database:
     type: SQLITE
     file-name: "dropping_blocks"
+
+action_blocks:
+  enabled: true
+  database:
+    type: SQLITE
+    file-name: "action_blocks"

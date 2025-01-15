@@ -49,6 +49,7 @@ tasks {
             url("https://cdn.modrinth.com/data/Vebnzrzj/versions/cfNN7sys/LuckPerms-Bukkit-5.4.145.jar")
             hangar("PlaceholderAPI", "2.11.6")
             modrinth("FancyHolograms", "2.4.1.127")
+            github("MilkBowl", "Vault", "1.7.3", "Vault.jar")
         }
     }
 }

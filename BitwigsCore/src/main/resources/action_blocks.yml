@@ -1,6 +1,6 @@
 types:
   block1:
-    permission: 'clickableblocks.type.block1' # Право нужное для использования блока.
+    permission: 'actionblocks.type.block1' # Право нужное для использования блока.
     permission-message: 'ㅅ У вас нет доступа к этой механике.'
     effect: # Эффект при использовании блока. Не обязательно.
       sound:

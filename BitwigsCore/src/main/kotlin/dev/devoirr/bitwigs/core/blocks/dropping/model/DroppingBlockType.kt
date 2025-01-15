@@ -7,6 +7,7 @@ import org.bukkit.Bukkit
 import org.bukkit.configuration.ConfigurationSection
 
 data class DroppingBlockType(
+    val key: String,
     val lootTime: Int,
     val refillTime: Int,
     val refillAfterLoots: Int,
@@ -52,6 +53,7 @@ data class DroppingBlockType(
             val items = mutableListOf<DroppingBlockItem>()
             if (!section.getKeys(false).contains("items")) {
                 return DroppingBlockType(
+                    section.name,
                     lootTime,
                     refillTime,
                     refillAfterLoots,
@@ -92,6 +94,7 @@ data class DroppingBlockType(
             }
 
             return DroppingBlockType(
+                section.name,
                 lootTime,
                 refillTime,
                 refillAfterLoots,

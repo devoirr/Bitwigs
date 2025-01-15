@@ -82,16 +82,16 @@ class TextUtility {
             val secs = seconds % 60
 
             // Manually build the string for optimal performance
-            return formatTimePiece(hours.toInt(), true) +
-                    formatTimePiece(minutes.toInt(), true) +
-                    formatTimePiece(seconds.toInt(), false)
+            return formatTimePiece(hours.toInt(), " ч. ") +
+                    formatTimePiece(minutes.toInt(), " м. ") +
+                    formatTimePiece(secs.toInt(), " сек.")
         }
 
-        private fun formatTimePiece(time: Int, needColon: Boolean): String {
+        private fun formatTimePiece(time: Int, name: String?): String {
             if (time == 0)
                 return ""
 
-            return "${if (time < 10) "0" else ""}$time${if (needColon) ":" else ""}"
+            return "$time${name ?: ""}"
         }
 
     }

@@ -4,7 +4,6 @@ import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.blocks.dropping.DroppingBlocksManager
 import dev.devoirr.bitwigs.core.chat.ChatManager
 import dev.devoirr.bitwigs.core.economy.EconomyManager
-import dev.devoirr.bitwigs.core.frames.FramesManager
 import dev.devoirr.bitwigs.core.warps.WarpsManager
 
 class ModuleCenter {
@@ -14,7 +13,6 @@ class ModuleCenter {
     private var economyManager: Loadable? = null
     private var warpManager: Loadable? = null
     private var chatManager: Loadable? = null
-    private var framesManager: Loadable? = null
     private var droppingBlocksManager: Loadable? = null
 
     fun loadModules() {
@@ -29,10 +27,6 @@ class ModuleCenter {
 
         if (plugin.config.getBoolean("chat.enabled", false)) {
             chatManager = tryLoad(ChatManager())
-        }
-
-        if (plugin.config.getBoolean("frames.enabled", false)) {
-            framesManager = tryLoad(FramesManager())
         }
 
         if (plugin.config.getBoolean("dropping_blocks.enabled", false)) {

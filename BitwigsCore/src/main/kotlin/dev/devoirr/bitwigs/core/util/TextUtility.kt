@@ -75,6 +75,25 @@ class TextUtility {
             )
         }
 
+        fun millisToTime(millis: Long): String {
+            val seconds = millis / 1000
+            val hours = seconds / 3600
+            val minutes = (seconds % 3600) / 60
+            val secs = seconds % 60
+
+            // Manually build the string for optimal performance
+            return formatTimePiece(hours.toInt(), true) +
+                    formatTimePiece(minutes.toInt(), true) +
+                    formatTimePiece(seconds.toInt(), false)
+        }
+
+        private fun formatTimePiece(time: Int, needColon: Boolean): String {
+            if (time == 0)
+                return ""
+
+            return "${if (time < 10) "0" else ""}$time${if (needColon) ":" else ""}"
+        }
+
     }
 
 }

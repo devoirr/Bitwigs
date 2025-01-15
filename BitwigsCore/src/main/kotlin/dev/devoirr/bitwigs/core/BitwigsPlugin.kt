@@ -10,6 +10,9 @@ import dev.devoirr.bitwigs.core.messages.Messages
 import dev.devoirr.bitwigs.core.messages.ReloadMessagesCommand
 import dev.devoirr.bitwigs.core.module.ModuleCenter
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
+import net.milkbowl.vault.chat.Chat
+import net.milkbowl.vault.economy.Economy
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -27,30 +30,38 @@ class BitwigsPlugin : JavaPlugin() {
 
     private lateinit var moduleCenter: ModuleCenter
 
+    var permission: Permission? = null
+        private set
+    var chat: Chat? = null
+        private set
+    var economy: Economy? = null
+        private set
+
     override fun onEnable() {
         print("Enabled Bitwigs!")
 
         instance = this
 
-        moduleCenter = ModuleCenter()
+        this.moduleCenter = ModuleCenter()
 
-        saveConfigFiles()
+        this.saveConfigFiles()
 
-        uniqueServerId = config.getString("unique-server-id")!!
+        this.uniqueServerId = config.getString("unique-server-id")!!
 
-        commandManager = PaperCommandManager(this)
-        commandManager.locales.setDefaultLocale(Locales.RUSSIAN)
+        this.commandManager = PaperCommandManager(this)
+        this.commandManager.locales.setDefaultLocale(Locales.RUSSIAN)
 
         this.registerCompletions()
         this.commandManager.registerCommand(ReloadMessagesCommand(this))
 
+        this.loadVault()
+
         BitwigsPlaceholderExpansion(this).register()
 
         PacketEvents.getAPI().init()
-
-        moduleCenter.loadModules()
-
         MenuListener().register()
+
+        this.moduleCenter.loadModules()
     }
 
     private fun registerCompletions() {
@@ -75,6 +86,17 @@ class BitwigsPlugin : JavaPlugin() {
         saveResource("messages.yml", false)
         val messagesConfig = Config(File(this.dataFolder, "messages.yml"))
         Messages.load(messagesConfig)
+    }
+
+    private fun loadVault() {
+
+        if (!Bukkit.getPluginManager().isPluginEnabled("Vault"))
+            return
+
+        permission = server.servicesManager.getRegistration(Permission::class.java)?.provider
+        chat = server.servicesManager.getRegistration(Chat::class.java)?.provider
+        economy = server.servicesManager.getRegistration(Economy::class.java)?.provider
+
     }
 
     override fun onDisable() {

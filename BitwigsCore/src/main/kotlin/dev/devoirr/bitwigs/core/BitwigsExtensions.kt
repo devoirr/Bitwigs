@@ -1,5 +1,7 @@
 package dev.devoirr.bitwigs.core
 
+import dev.devoirr.bitwigs.core.cooldown.Cooldown
+import dev.devoirr.bitwigs.core.cooldown.CooldownManager
 import dev.devoirr.bitwigs.core.util.TextUtility
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
@@ -9,6 +11,7 @@ import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.block.BlockFace
 import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.util.io.BukkitObjectInputStream
@@ -193,3 +196,10 @@ fun ItemStack.hasMetaAndModelData(): Boolean {
 fun Location.centralize(): Location {
     return this.clone().add(0.5, 0.5, 0.5)
 }
+
+fun Player.hasCooldownBypass() = this.hasPermission("bitwigs.cooldowns.bypass")
+fun Player.getGroup(): String {
+    return BitwigsPlugin.instance.permission?.getPrimaryGroup(this) ?: "default"
+}
+
+fun Player.getLeft(cooldown: Cooldown): String? = CooldownManager.getLeft(this, cooldown)

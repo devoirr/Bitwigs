@@ -16,6 +16,7 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://repo.fancyplugins.de/releases")
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -25,6 +26,7 @@ dependencies {
     implementation("com.github.retrooper:packetevents-spigot:2.7.0")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("de.oliver:FancyHolograms:2.4.1")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 }
 
 tasks.shadowJar {

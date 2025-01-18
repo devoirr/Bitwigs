@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Optional
 import dev.devoirr.bitwigs.core.economy.EconomyManager
-import dev.devoirr.bitwigs.core.messages.Messages
+import dev.devoirr.bitwigs.core.locale.Locale
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -23,7 +23,7 @@ class BalanceCommand(private val manager: EconomyManager) : BaseCommand() {
 
     private fun handleForOwnBalance(sender: CommandSender) {
         if (sender !is Player) {
-            Messages.COMMAND_ONLY_FOR_PLAYERS.getError().sendTo(sender)
+            Locale.commandForPlayers.send(sender)
             return
         }
 
@@ -31,11 +31,10 @@ class BalanceCommand(private val manager: EconomyManager) : BaseCommand() {
         var balance = account.getBalancesString(manager)
 
         if (balance.isBlank()) {
-            balance = Messages.COMMAND_BALANCE_EMPTY.getLiteral()
+            balance = Locale.emptyBalance.literal
         }
 
-        Messages.COMMAND_BALANCE_RESULT_OWN.getInfo().replace("{balance}", balance).sendTo(sender)
-
+        Locale.balanceResultOwn.send(sender, "{balance}" to balance)
         return
     }
 
@@ -46,7 +45,7 @@ class BalanceCommand(private val manager: EconomyManager) : BaseCommand() {
         }
 
         if (!sender.hasPermission("bitwigs.economy.balance.others")) {
-            Messages.COMMAND_BALANCE_ONLY_OWN.getError().sendTo(sender)
+            Locale.balanceOnlyOwn.send(sender)
             return
         }
 
@@ -55,12 +54,11 @@ class BalanceCommand(private val manager: EconomyManager) : BaseCommand() {
         var balance = account.getBalancesString(manager)
 
         if (balance.isBlank()) {
-            balance = Messages.COMMAND_BALANCE_EMPTY.getLiteral()
+            balance = Locale.emptyBalance.literal
         }
 
-        
-        Messages.COMMAND_BALANCE_RESULT_OTHER.getInfo().replace("{balance}", balance).replace("{target}", targetName)
-            .sendTo(sender)
+
+        Locale.balanceResultOther.send(sender, "{balance}" to balance)
     }
 
 }

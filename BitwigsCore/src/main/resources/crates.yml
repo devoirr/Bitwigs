@@ -1,0 +1,9 @@
+crates:
+  crate1:
+    hologram-y-offset: 0.6
+    hologram-text:
+      - '&fСУНДУК С ХУЙНЁЙ'
+      - '&fНажмите для открытия'
+    chest:
+      top-model-data: 33334 # Модель-дата крышки сунука.
+      bottom-model-data: 2222 # Модель-дата основания сунука.

@@ -9,5 +9,5 @@ open class Listener : Listener {
     fun register() {
         Bukkit.getPluginManager().registerEvents(this, BitwigsPlugin.instance)
     }
-
+    
 }

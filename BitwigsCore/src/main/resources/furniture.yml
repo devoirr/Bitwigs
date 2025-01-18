@@ -1,0 +1,35 @@
+chair_1:
+  item:
+    material: 'leather_horse_armor'
+    model-data: "25-27,13,11"
+  hitbox:
+    height: 2
+    width: 1
+    depth: 1
+  sitting:
+    allowed: true
+    chair-y-offset: 0.2
+  hardness: 5
+  preferred-tool: AXE # Этим предметом блок будет ломаться быстрее. Варианты: AXE, PICKAXE, SHOVEL, HOE
+  tools-to-drop: [ AXE, PICKAXE ] # Будет выпадать при ломании этими предметами. Если не указать - не будет выпадать никогда. Если добавить ALL будет выпадать всегда.
+  allow-place-on: # Можно не указывать
+    - STONE
+  effects:
+    break:
+      sound:
+        sound: 'block.note.pling'
+        volume: 0.5
+        pitch: 1
+      particle:
+        particle: 'hui'
+        amount: 10
+    place:
+      sound:
+        sound: 'block.note.pling'
+        volume: 0.5
+        pitch: 1
+      particle:
+        particle: 'hui'
+        amount: 10
+  rotatable: true # Разрешает вращение предмета с нажатием шифта
+  light: 10

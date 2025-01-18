@@ -1,0 +1,10 @@
+# Разработано devoirr для Bitwigs (2025)
+
+# Экстренные права
+# bitwigs.unteleportable - Запрещает другим игрокам вас телепортировать.
+
+# Команды
+#   /setwarp /createwarp <name> - bitwigs.warps.create Лимит: bitwigs.warps.create.<кол-во> | bitwigs.warps.create.unlimited
+#   /deletewarp <name> - bitwigs.warps.delete / bitwigs.warps.delete.others
+#   /warp <name> (player) - bitwigs.warps.teleport / bitwigs.warps.teleport.others
+#

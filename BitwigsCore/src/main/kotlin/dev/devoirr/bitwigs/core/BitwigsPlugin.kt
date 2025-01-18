@@ -4,10 +4,8 @@ import co.aikar.commands.Locales
 import co.aikar.commands.PaperCommandManager
 import com.github.retrooper.packetevents.PacketEvents
 import dev.devoirr.bitwigs.core.blocks.ReplacedBlocks
-import dev.devoirr.bitwigs.core.config.Config
 import dev.devoirr.bitwigs.core.gui.MenuListener
-import dev.devoirr.bitwigs.core.messages.Messages
-import dev.devoirr.bitwigs.core.messages.ReloadMessagesCommand
+import dev.devoirr.bitwigs.core.locale.Locale
 import dev.devoirr.bitwigs.core.module.ModuleCenter
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
 import net.milkbowl.vault.chat.Chat
@@ -15,7 +13,6 @@ import net.milkbowl.vault.economy.Economy
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
-import java.io.File
 import java.util.*
 
 class BitwigsPlugin : JavaPlugin() {
@@ -52,7 +49,6 @@ class BitwigsPlugin : JavaPlugin() {
         this.commandManager.locales.setDefaultLocale(Locales.RUSSIAN)
 
         this.registerCompletions()
-        this.commandManager.registerCommand(ReloadMessagesCommand(this))
 
         this.loadVault()
 
@@ -78,15 +74,16 @@ class BitwigsPlugin : JavaPlugin() {
         saveResource("chat.yml", false)
         saveResource("dropping_blocks.yml", false)
         saveResource("action_blocks.yml", false)
+        saveResource("furniture.yml", false)
+        saveResource("noteblocks.yml", false)
 
         if (!config.getKeys(false).contains("unique-server-id")) {
             config.set("unique-server-id", UUID.randomUUID().toString().split("-")[0])
             saveConfig()
         }
 
-        saveResource("messages.yml", false)
-        val messagesConfig = Config(File(this.dataFolder, "messages.yml"))
-        Messages.load(messagesConfig)
+        saveResource("locale.yml", false)
+        Locale.load()
     }
 
     private fun loadVault() {

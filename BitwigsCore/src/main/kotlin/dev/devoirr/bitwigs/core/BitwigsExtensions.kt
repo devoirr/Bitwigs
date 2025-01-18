@@ -2,6 +2,7 @@ package dev.devoirr.bitwigs.core
 
 import dev.devoirr.bitwigs.core.cooldown.Cooldown
 import dev.devoirr.bitwigs.core.cooldown.CooldownManager
+import dev.devoirr.bitwigs.core.decoration.model.Tool
 import dev.devoirr.bitwigs.core.util.TextUtility
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
@@ -207,3 +208,34 @@ fun Player.getLeft(cooldown: Cooldown): String? = CooldownManager.getLeft(this, 
 fun Player.addCooldown(cooldown: Cooldown) {
     CooldownManager.addToPlayer(this, cooldown)
 }
+
+fun ItemStack.getTool(): Tool? {
+    return Tool.entries.firstOrNull { it.isThisTool(this) }
+}
+
+fun Player.getWarpsLimit(): Int {
+    var limit = 0
+    for (permission in this.effectivePermissions) {
+        if (permission.permission.startsWith("bitwigs.warps.create.")) {
+            limit = permission.permission.substring(21).toInt().coerceAtLeast(limit)
+        }
+    }
+    return limit
+}
+
+fun Player.getHomesLimit(): Int {
+    var limit = 0
+    for (permission in this.effectivePermissions) {
+        if (permission.permission.startsWith("bitwigs.homes.create.")) {
+            limit = permission.permission.substring(21).toInt().coerceAtLeast(limit)
+        }
+    }
+    return limit
+}
+
+fun Player.isUnteleportable() = this.hasPermission("bitwigs.unteleportable")
+
+fun Player.hasUnlimitedHomes() = this.hasPermission("bitwigs.homes.create.unlimited")
+fun Player.hasUnlimitedWarps() = this.hasPermission("bitwigs.warps.create.unlimited")
+
+fun Player.canDeleteOthersWarps() = this.hasPermission("bitwigs.warps.delete.others")

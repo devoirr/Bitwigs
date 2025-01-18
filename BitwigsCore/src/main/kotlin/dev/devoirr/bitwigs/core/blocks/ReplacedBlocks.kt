@@ -25,6 +25,15 @@ object ReplacedBlocks {
         blocks.clear()
     }
 
+    fun reset(block: Block) {
+
+        val replacedBlockData = blocks.firstOrNull { it.block.location == block.location } ?: return
+
+        block.type = replacedBlockData.defaultMaterial
+        block.blockData = replacedBlockData.defaultData
+
+    }
+
 }
 
 data class ReplacedBlockData(val block: Block, val defaultMaterial: Material, val defaultData: BlockData)

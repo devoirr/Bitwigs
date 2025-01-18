@@ -7,7 +7,7 @@ import dev.devoirr.bitwigs.core.blocks.dropping.DroppingBlocksManager
 import dev.devoirr.bitwigs.core.blocks.dropping.model.DroppingBlockItem
 import dev.devoirr.bitwigs.core.blocks.dropping.model.database.PlacedDroppingBlockRow
 import dev.devoirr.bitwigs.core.gui.Menu
-import dev.devoirr.bitwigs.core.messages.Messages
+import dev.devoirr.bitwigs.core.locale.Locale
 import dev.devoirr.bitwigs.core.toComponent
 import dev.devoirr.bitwigs.core.toString
 import net.kyori.adventure.text.Component
@@ -32,13 +32,13 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         }
 
         if (section.getKeys(false).contains(id)) {
-            Messages.COMMAND_DROPPING_BLOCKS_ID_ALREADY_USED.getError().sendTo(player)
+            Locale.droppingBlockItemAlreadyExists.send(player)
             return
         }
 
         val itemStack = player.inventory.itemInMainHand
         if (itemStack.type == Material.AIR) {
-            Messages.COMMAND_DROPPING_BLOCKS_HOLD_SOMETHING.getError().sendTo(player)
+            Locale.needToHoldAnItem.send(player)
             return
         }
 
@@ -48,7 +48,7 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         DroppingBlockItem.write(item, itemSection)
 
         manager.config.save()
-        Messages.COMMAND_DROPPING_BLOCKS_ITEM_SAVED.getInfo().sendTo(player)
+        Locale.droppingBlockItemSaved.send(player)
     }
 
     @Subcommand("addblock")
@@ -59,18 +59,18 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
 
         val targetBlock = player.getTargetBlockExact(5)
         if (targetBlock == null) {
-            player.sendMessage("You must look at some block.")
+            Locale.mustLookAtBlock.send(player)
             return
         }
 
         if (targetBlock.hasMetadata("dropping_block")) {
-            player.sendMessage("This block is already dropping-block!")
+            Locale.alreadyDroppingBlock.send(player)
             return
         }
 
         val type = manager.getType(typeName)
         if (type == null) {
-            player.sendMessage("Type not found.")
+            Locale.droppingBlockTypeNotFound.send(player)
             return
         }
 
@@ -83,22 +83,21 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         targetBlock.setMetadata("dropping_block", FixedMetadataValue(BitwigsPlugin.instance, typeName))
         targetBlock.setMetadata("dropping_block_loots", FixedMetadataValue(BitwigsPlugin.instance, 0))
 
-        player.sendMessage("Successfully created.")
+        Locale.droppingBlockCreated.send(player)
 
     }
 
     @Subcommand("removeblock")
     @Description("Удаляет дроп-блок")
     fun removeBlock(player: Player, args: Array<String>) {
-
         val targetBlock = player.getTargetBlockExact(5)
         if (targetBlock == null) {
-            player.sendMessage("You must look at some block.")
+            Locale.mustLookAtBlock.send(player)
             return
         }
 
         if (!targetBlock.hasMetadata("dropping_block")) {
-            player.sendMessage("This block is not dropping-block!")
+            Locale.notDroppingBlock.send(player)
             return
         }
 
@@ -112,8 +111,7 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         row.location = targetBlock.location.toString(block = true)
 
         manager.database.delete(row)
-        player.sendMessage("Dropping block removed.")
-
+        Locale.droppingBlockRemoved.send(player)
     }
 
     @Subcommand("info")
@@ -121,12 +119,12 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
 
         val targetBlock = player.getTargetBlockExact(5)
         if (targetBlock == null) {
-            player.sendMessage("You must look at some block.")
+            Locale.mustLookAtBlock.send(player)
             return
         }
 
         if (!targetBlock.hasMetadata("dropping_block")) {
-            player.sendMessage("This is not a dropping block!")
+            Locale.notDroppingBlock.send(player)
             return
         }
 
@@ -134,7 +132,6 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         val type = manager.getType(id) ?: return
 
         val infoItem = buildItem(
-            Material.ITEM_FRAME,
             Component.text(id).color(NamedTextColor.WHITE),
             listOf(
                 "".toComponent(),
@@ -159,8 +156,8 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
         menu.openFor(player)
     }
 
-    private fun buildItem(material: Material, name: Component, lore: List<Component>): ItemStack {
-        val itemStack = ItemStack(material)
+    private fun buildItem(name: Component, lore: List<Component>): ItemStack {
+        val itemStack = ItemStack(Material.ITEM_FRAME)
         val itemMeta = itemStack.itemMeta
 
         itemMeta.displayName(name.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE))
@@ -172,7 +169,7 @@ class DroppingBlocksCommand(private val manager: DroppingBlocksManager) : BaseCo
 
     private fun setLore(itemStack: ItemStack, chance: Double): ItemStack {
         val meta = itemStack.itemMeta
-        meta.lore(listOf("".toComponent(), " &fШансы выпадения: &7$chance".toComponent(), "".toComponent()))
+        meta.lore(listOf("".toComponent(), " &fШанс выпадения: &7$chance".toComponent(), "".toComponent()))
         itemStack.itemMeta = meta
         return itemStack
     }

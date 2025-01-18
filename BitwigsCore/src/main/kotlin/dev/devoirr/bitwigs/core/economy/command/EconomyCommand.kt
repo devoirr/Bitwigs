@@ -3,7 +3,7 @@ package dev.devoirr.bitwigs.core.economy.command
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
 import dev.devoirr.bitwigs.core.economy.EconomyManager
-import dev.devoirr.bitwigs.core.messages.Messages
+import dev.devoirr.bitwigs.core.locale.Locale
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 
@@ -55,51 +55,58 @@ class EconomyCommand(private val manager: EconomyManager) : BaseCommand() {
 
         val currency = manager.getCurrency(currencyName)
         if (currency == null) {
-            Messages.COMMAND_ECONOMY_CURRENCY_NOT_FOUND.getError().replace("{input}", currencyName)
-                .sendTo(sender)
+            Locale.currencyNotFound.send(sender, "{input}" to currencyName)
             return
         }
 
         if (amount < 0) {
-            Messages.COMMAND_ECONOMY_AMOUNT_CANNOT_BE_NEGATIVE.getError().sendTo(sender)
+            Locale.transactionCantBeNegative.send(sender)
             return
         }
 
         if (amount == 0.0 && type != EconomyCommandType.SET) {
-            Messages.COMMAND_ECONOMY_AMOUNT_MUST_BE_POSITIVE.getError().sendTo(sender)
+            Locale.transactionMustBePositive.send(sender)
             return
         }
 
         if (!manager.databaseManager.isPlayerRegistered(uuid)) {
-            Messages.COMMAND_ECONOMY_NOT_REGISTERED.getError().replace("{target}", targetName).sendTo(sender)
+            Locale.accountNotRegistered.send(sender, "{target}" to targetName)
             return
         }
 
         when (type) {
             EconomyCommandType.ADD -> {
                 manager.databaseManager.addMoney(uuid, currency, amount)
-                Messages.COMMAND_ECONOMY_ADD_SUCCESS.getInfo().replace("{target}", targetName)
-                    .replace("{amount}", amount.toString()).replace("{currency}", currency.symbol.toString())
-                    .sendTo(sender)
+                Locale.transactionAddSuccess.send(
+                    sender,
+                    "{target}" to targetName,
+                    "{currency}" to currency.symbol.toString(),
+                    "{amount}" to amount.toString()
+                )
             }
 
             EconomyCommandType.TAKE -> {
                 val changes = manager.databaseManager.takeMoney(uuid, currency, amount)
                 if (changes > 0) {
-                    Messages.COMMAND_ECONOMY_TAKE_SUCCESS.getInfo().replace("{target}", targetName)
-                        .replace("{amount}", amount.toString()).replace("{currency}", currency.symbol.toString())
-                        .sendTo(sender)
+                    Locale.transactionTakeSuccess.send(
+                        sender,
+                        "{target}" to targetName,
+                        "{currency}" to currency.symbol.toString(),
+                        "{amount}" to amount.toString()
+                    )
                 } else {
-                    Messages.COMMAND_ECONOMY_NOT_ENOUGH_MONEY.getError().replace("{target}", targetName)
-                        .sendTo(sender)
+                    Locale.transactionTakeNotEnough.send(sender)
                 }
             }
 
             EconomyCommandType.SET -> {
                 manager.databaseManager.setMoney(uuid, currency, amount)
-                Messages.COMMAND_ECONOMY_SET_SUCCESS.getInfo().replace("{target}", targetName)
-                    .replace("{amount}", amount.toString()).replace("{currency}", currency.symbol.toString())
-                    .sendTo(sender)
+                Locale.transactionSetSuccess.send(
+                    sender,
+                    "{target}" to targetName,
+                    "{currency}" to currency.symbol.toString(),
+                    "{amount}" to amount.toString()
+                )
             }
         }
     }

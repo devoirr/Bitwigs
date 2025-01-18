@@ -1,7 +1,7 @@
 package dev.devoirr.bitwigs.core.chat.listener
 
 import dev.devoirr.bitwigs.core.chat.ChatManager
-import dev.devoirr.bitwigs.core.messages.Messages
+import dev.devoirr.bitwigs.core.locale.Locale
 import dev.devoirr.bitwigs.core.toComponent
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.clip.placeholderapi.PlaceholderAPI
@@ -37,17 +37,17 @@ class ChatListener(private val manager: ChatManager) : Listener {
         }
 
         if (messageText.length < manager.minLength) {
-            Messages.CHAT_MESSAGE_TOO_SHORT.getError().sendTo(player)
+            Locale.chatMessageTooShort.send(player)
             return
         }
 
         if (messageText.length > manager.maxLength) {
-            Messages.CHAT_MESSAGE_TOO_LONG.getError().sendTo(player)
+            Locale.chatMessageTooLong.send(player)
             return
         }
 
         if (!messageText.matches(manager.chatRegex)) {
-            Messages.CHAT_MESSAGE_REGEX.getError().sendTo(player)
+            Locale.chatMessageRegex.send(player)
             return
         }
 

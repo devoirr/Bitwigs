@@ -1,10 +1,12 @@
 package dev.devoirr.bitwigs.core.module
 
 import dev.devoirr.bitwigs.core.BitwigsPlugin
-import dev.devoirr.bitwigs.core.blocks.clickable.ActionBlocksManager
+import dev.devoirr.bitwigs.core.blocks.action.ActionBlocksManager
 import dev.devoirr.bitwigs.core.blocks.dropping.DroppingBlocksManager
 import dev.devoirr.bitwigs.core.chat.ChatManager
+import dev.devoirr.bitwigs.core.decoration.furniture.FurnitureManager
 import dev.devoirr.bitwigs.core.economy.EconomyManager
+import dev.devoirr.bitwigs.core.kits.KitsManager
 import dev.devoirr.bitwigs.core.warps.WarpsManager
 
 class ModuleCenter {
@@ -16,6 +18,8 @@ class ModuleCenter {
     private var chatManager: Loadable? = null
     private var droppingBlocksManager: Loadable? = null
     private var actionBlocksManager: Loadable? = null
+    private var kitsManager: Loadable? = null
+    private var furnitureManager: Loadable? = null
 
     fun loadModules() {
 
@@ -37,6 +41,14 @@ class ModuleCenter {
 
         if (plugin.config.getBoolean("action_blocks.enabled", false)) {
             actionBlocksManager = tryLoad(ActionBlocksManager())
+        }
+
+        if (plugin.config.getBoolean("kits.enabled", false)) {
+            kitsManager = tryLoad(KitsManager())
+        }
+
+        if (plugin.config.getBoolean("furniture.enabled", false)) {
+            furnitureManager = tryLoad(FurnitureManager())
         }
 
     }

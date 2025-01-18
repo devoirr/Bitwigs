@@ -1,7 +1,7 @@
 package dev.devoirr.bitwigs.core.blocks
 
-import dev.devoirr.bitwigs.core.effect.particle.ParticleInfo
-import dev.devoirr.bitwigs.core.effect.sound.SoundInfo
+import dev.devoirr.bitwigs.core.effect.ParticleInfo
+import dev.devoirr.bitwigs.core.effect.SoundInfo
 import org.bukkit.Location
 import org.bukkit.configuration.ConfigurationSection
 

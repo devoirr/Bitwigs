@@ -28,3 +28,15 @@ action_blocks:
   database:
     type: SQLITE
     file-name: "action_blocks"
+
+furniture:
+  enabled: true
+  database:
+    type: SQLITE
+    file-name: "furniture"
+
+kits:
+  enabled: true
+  database:
+    type: SQLITE
+    file-name: "kits"

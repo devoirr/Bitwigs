@@ -54,7 +54,6 @@ class MenuListener : Listener() {
 
         if (event.click == ClickType.DOUBLE_CLICK && event.hotbarButton != -1) {
             event.isCancelled = true
-            player.sendMessage("1")
             return
         }
 
@@ -64,15 +63,11 @@ class MenuListener : Listener() {
 
         val clickedInventory = event.clickedInventory ?: return
         if (clickedInventory != player.openInventory.topInventory) {
-            player.sendMessage("2")
             return
         }
-
-        player.sendMessage(event.action.name)
-
+        
         if (event.action !in allowedActions) {
             event.isCancelled = true
-            player.sendMessage("3")
             return
         }
 

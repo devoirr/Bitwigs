@@ -1,17 +1,13 @@
 package dev.devoirr.bitwigs.core.item
 
-import dev.devoirr.bitwigs.core.toComponent
 import dev.devoirr.bitwigs.core.toIntegerList
-import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
 
 data class ItemComparator(
     val material: Material,
-    val modelData: List<Int>,
-    val displayName: Component? = null,
-    val lore: List<Component>? = null
+    val modelData: List<Int>
 ) {
 
     companion object {
@@ -20,11 +16,7 @@ data class ItemComparator(
             val material = Material.matchMaterial(materialString.uppercase()) ?: Material.STONE
             val modelDataString = section.getString("model-data") ?: "0"
             val modelDataList = modelDataString.toIntegerList()
-            val displayName = section.getString("name")?.toComponent()
-            val lore: List<Component>? =
-                if (section.getKeys(false).contains("lore")) section.getStringList("lore").map { it.toComponent() }
-                else null
-            return ItemComparator(material, modelDataList, displayName, lore)
+            return ItemComparator(material, modelDataList)
         }
     }
 
@@ -37,18 +29,6 @@ data class ItemComparator(
             return false
         if (itemStack.itemMeta.customModelData !in modelData)
             return false
-        displayName?.let {
-            if (!itemStack.itemMeta.hasDisplayName())
-                return false
-            if (itemStack.itemMeta.displayName() != displayName)
-                return false
-        }
-        lore?.let {
-            if (!itemStack.itemMeta.hasLore())
-                return false
-            if (itemStack.itemMeta.lore() != lore)
-                return false
-        }
         return true
     }
 }

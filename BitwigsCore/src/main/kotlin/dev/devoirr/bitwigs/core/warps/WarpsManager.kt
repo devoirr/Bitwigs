@@ -4,6 +4,7 @@ import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.database.DatabaseInfo
 import dev.devoirr.bitwigs.core.module.Loadable
 import dev.devoirr.bitwigs.core.warps.model.Warp
+import org.bukkit.entity.Player
 
 class WarpsManager : Loadable {
 
@@ -62,5 +63,7 @@ class WarpsManager : Loadable {
         return loadedWarps[name]!!
     }
 
-    fun getAllWarpNames() = loadedWarps.keys
+    private fun getAllWarpNames() = loadedWarps.keys
+
+    fun getPlayerWarps(player: Player) = loadedWarps.values.filter { it.creator == player.uniqueId }
 }

@@ -5,6 +5,14 @@ import org.bukkit.Bukkit
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 
+/**
+ *  A "channel" in game-chat.
+ *
+ * @param format The visual format for the message. Supports placeholders.
+ * @param range A range for the messages. If null, the message will be sent to everyone.
+ * @param symbol The prefix for identifying the channel.
+ * @param permission If specified, only players with this permission can send and recieve messages from this channel
+ */
 data class ChatChannel(val format: String, val range: Int?, val symbol: Char?, val permission: String?) {
 
     companion object {

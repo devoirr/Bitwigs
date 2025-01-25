@@ -1,5 +1,7 @@
 package dev.devoirr.bitwigs.core.decoration.furniture
 
+import com.github.retrooper.packetevents.PacketEvents
+import com.github.retrooper.packetevents.event.PacketListenerPriority
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.blocks.BlockEffect
 import dev.devoirr.bitwigs.core.centralize
@@ -12,17 +14,23 @@ import dev.devoirr.bitwigs.core.decoration.furniture.entities.FurnitureEntityMan
 import dev.devoirr.bitwigs.core.decoration.furniture.listener.FurnitureBreakListener
 import dev.devoirr.bitwigs.core.decoration.furniture.listener.FurniturePlaceListener
 import dev.devoirr.bitwigs.core.decoration.furniture.listener.FurniturePlayerListener
+import dev.devoirr.bitwigs.core.decoration.furniture.packet.FurniturePacketListener
+import dev.devoirr.bitwigs.core.decoration.model.Tool
 import dev.devoirr.bitwigs.core.module.Loadable
 import dev.devoirr.bitwigs.core.util.IdUtility
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
+import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.scheduler.BukkitRunnable
 import java.io.File
+import kotlin.math.pow
 
 class FurnitureManager : Loadable, DecorationMechanic {
 
@@ -33,6 +41,8 @@ class FurnitureManager : Loadable, DecorationMechanic {
     private val placeListener = FurniturePlaceListener(this)
     private val breakListener = FurnitureBreakListener(this)
     private val playerListener = FurniturePlayerListener()
+
+    private val packetListener = FurniturePacketListener(this)
 
     class PlacedFurniture(
         val id: String,
@@ -62,6 +72,8 @@ class FurnitureManager : Loadable, DecorationMechanic {
         placeListener.register()
         breakListener.register()
         playerListener.register()
+
+        PacketEvents.getAPI().eventManager.registerListener(packetListener, PacketListenerPriority.HIGH)
 
         object : BukkitRunnable() {
             override fun run() {
@@ -126,19 +138,44 @@ class FurnitureManager : Loadable, DecorationMechanic {
 
     fun getFurnitureType(name: String) = types[name]
 
-    override fun getName(): String {
-        return "furniture"
-    }
+    override fun getName(): String = "furniture"
 
     override fun isThisMechanic(block: Block): Boolean {
-        return false
+        return block.hasMetadata("furniture")
     }
 
-    override fun getHardnessModifier(block: Block): DecorationMechanic.HardnessModifier {
-        TODO("Not yet implemented")
+    override fun breakBlock(block: Block, player: Player, itemStack: ItemStack) {
+        val event = BlockBreakEvent(block, player)
+        object : BukkitRunnable() {
+            override fun run() {
+                Bukkit.getPluginManager().callEvent(event)
+            }
+        }.runTask(plugin)
+    }
+
+    override fun getPeriodForBlock(block: Block, itemStack: ItemStack): Long {
+
+        val placedFurniture = getPlacedFurniture(block.getMetadata("furniture")[0].asString()) ?: return 0L
+        val type = getFurnitureType(placedFurniture.type) ?: return 0L
+
+        val period = type.hardness
+        var modifier = 1.0
+
+        if (type.isThisTool(itemStack)) {
+            modifier *= 0.4
+            val hierarchy = Tool.getPriority(itemStack)
+            if (hierarchy >= 1) {
+                modifier *= 0.9.pow(hierarchy.toDouble())
+            }
+        }
+
+        return modifier.toLong() * period
     }
 
     override fun getEffect(block: Block, interactionType: InteractionType): BlockEffect? {
-        TODO("Not yet implemented")
+        val placedFurniture = getPlacedFurniture(block.getMetadata("furniture")[0].asString()) ?: return null
+        val type = getFurnitureType(placedFurniture.type) ?: return null
+
+        return type.effects[interactionType]
     }
 }

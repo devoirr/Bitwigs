@@ -6,7 +6,6 @@ import dev.devoirr.bitwigs.core.decoration.furniture.FurnitureManager
 import dev.devoirr.bitwigs.core.listener.Listener
 import dev.devoirr.bitwigs.core.util.PlayerUtility
 import org.bukkit.Material
-import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.player.PlayerInteractEvent
@@ -30,14 +29,16 @@ class FurniturePlaceListener(private val manager: FurnitureManager) : Listener()
 
         event.isCancelled = true
 
+        if (block.type.name !in furnitureType.allowPlacedOn) {
+            return
+        }
+
         val target = if (block.isReplaceable) block else block.getRelative(blockFace)
 
         val playerBlockFace = PlayerUtility.yawToBlockFace(player)
         val blocks = furnitureType.hitbox.getBlocks(target, playerBlockFace)
 
         if (blocks.any { !it.isReplaceable }) {
-            event.isCancelled = true
-            player.playSound(player, Sound.ENTITY_VILLAGER_NO, 1f, .5f)
             return
         }
 

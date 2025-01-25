@@ -3,6 +3,7 @@ package dev.devoirr.bitwigs.core.decoration.furniture.listener
 import dev.devoirr.bitwigs.core.BitwigsPlugin
 import dev.devoirr.bitwigs.core.centralize
 import dev.devoirr.bitwigs.core.decoration.furniture.FurnitureManager
+import dev.devoirr.bitwigs.core.getTool
 import dev.devoirr.bitwigs.core.listener.Listener
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
@@ -25,13 +26,18 @@ class FurnitureBreakListener(private val manager: FurnitureManager) : Listener()
         val type = manager.getFurnitureType(placed.type) ?: return
         val blocks = type.hitbox.getBlocks(center.block, placed.blockFace)
 
+        val item = event.player.inventory.itemInMainHand
+
         blocks.forEach {
             it.type = Material.AIR;
             it.removeMetadata("funriture", BitwigsPlugin.instance)
         }
 
         manager.deletePlacedFurniture(placed.id)
-        center.world.dropItemNaturally(center, itemStack)
+        val shouldDrop = item.getTool()?.name in type.toolsToDrop || item.type.name in type.toolsToDrop
+        if (shouldDrop) {
+            center.world.dropItemNaturally(center.centralize(), itemStack)
+        }
 
     }
 

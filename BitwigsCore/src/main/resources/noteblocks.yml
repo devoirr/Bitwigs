@@ -6,23 +6,13 @@
 # Сегодня - кент, а завтра - мент.
 #
 
-#blocks:
-#  324: "3;banjo;ВИШНЁВАЯ СЕМЁРКА НЕОНОВЫЕ ФАРЫ;true" # modeldata: note;instrument;name;powered
-
 blocks:
   wood:
     blocks:
-      324: "3;banjo;Дерево;true" # modeldata: note;instrument;name;powered
-      333: "4;banjo;Дерево;true"
+      51016: "23;BIT;Уличная плитка;false" # modeldata: note;instrument;name;powered
     hardness: 5
-    tool-to-break: AXE # PICKAXE, AXE, SHOVEL, HOE.
-    tools-to-drop: [ AXE, PICKAXE, DIAMOND_SWORD ] # Будет выпадать при ломании этими предметами. Если не указать будет выпадать всегда. Если указать [] не будет выпадать. Можно указывать как вид инструмента, так и айди.
+    preferred-tool: PICKAXE # PICKAXE, AXE, SHOVEL, HOE.
+    tools-to-drop: [ PICKAXE, DIAMOND_SWORD ] # Будет выпадать при ломании этими предметами. Если не указать будет выпадать всегда. Если указать [] не будет выпадать. Можно указывать как вид инструмента, так и айди.
     allow-place-on: # Можно не указывать
       - STONE
-    effects:
-      break:
-        sound: 'block.note.pling'
-        particle: 'hui'
-      place:
-        sound: 'block.note.pling'
-        particle: 'hui'
+    effects: { }

@@ -6,6 +6,7 @@ import dev.devoirr.bitwigs.core.decoration.InteractionType
 import dev.devoirr.bitwigs.core.decoration.model.Tool
 import dev.devoirr.bitwigs.core.item.ItemComparator
 import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.inventory.ItemStack
 
 data class FurnitureType(
     val name: String,
@@ -36,6 +37,22 @@ data class FurnitureType(
             val preferredTool =
                 section.getString("preferred-tool")?.let { Tool.entries.firstOrNull { e -> e.name == it } }
             val toolsToDrop = section.getStringList("tools-to-drop")
+            
+            val effects = mutableMapOf<InteractionType, BlockEffect>()
+            val effectsSection = section.getConfigurationSection("effects")
+            if (effectsSection != null) {
+
+                var type: InteractionType?
+                for (interactionTypeName in effectsSection.getKeys(false)) {
+                    type = InteractionType.entries.firstOrNull { it.name.lowercase() == interactionTypeName }
+                    if (type == null)
+                        continue
+
+                    effects[type] =
+                        BlockEffect.parse(effectsSection.getConfigurationSection(interactionTypeName)!!)
+                }
+
+            }
 
             return FurnitureType(
                 name,
@@ -46,7 +63,7 @@ data class FurnitureType(
                 hardness,
                 preferredTool,
                 toolsToDrop,
-                mutableMapOf(),
+                effects,
                 rotatable,
                 1
             )
@@ -60,6 +77,13 @@ data class FurnitureType(
                 return Sitting(section.getBoolean("allowed", false), section.getDouble("chair-y-offset", 0.0))
             }
         }
+    }
+
+    fun isThisTool(itemStack: ItemStack): Boolean {
+        if (preferredTool == null)
+            return false
+
+        return preferredTool.isThisTool(itemStack)
     }
 
 }

@@ -35,6 +35,9 @@ furniture:
     type: SQLITE
     file-name: "furniture"
 
+noteblocks:
+  enabled: true
+
 kits:
   enabled: true
   database:

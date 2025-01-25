@@ -1,7 +1,7 @@
 chair_1:
   item:
     material: 'leather_horse_armor'
-    model-data: "25-27,13,11"
+    model-data: "25-27,13,11,10001"
   hitbox:
     height: 2
     width: 1
@@ -23,6 +23,14 @@ chair_1:
       particle:
         particle: 'hui'
         amount: 10
+    dig:
+      sound:
+        sound: 'block.note.pling'
+        volume: 0.5
+        pitch: 1
+      particle:
+        particle: 'DRIPPING_LAVA'
+        amount: 20
     place:
       sound:
         sound: 'block.note.pling'

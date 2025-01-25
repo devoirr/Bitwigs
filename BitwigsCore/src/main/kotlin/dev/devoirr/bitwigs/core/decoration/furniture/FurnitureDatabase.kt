@@ -13,7 +13,7 @@ import dev.devoirr.bitwigs.core.toLocation
 import dev.devoirr.bitwigs.core.toString
 import org.bukkit.block.BlockFace
 
-class FurnitureDatabase(private val manager: FurnitureManager) {
+class FurnitureDatabase(manager: FurnitureManager) {
 
     @DatabaseTable(tableName = "furniture")
     class PlacedFurnitureRow() {

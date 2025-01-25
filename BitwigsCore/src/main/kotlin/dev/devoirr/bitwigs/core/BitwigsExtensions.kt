@@ -191,7 +191,10 @@ fun ConfigurationSection.getStringOrNull(key: String): String? {
 }
 
 fun ItemStack.hasMetaAndModelData(): Boolean {
-    return this.hasItemMeta() && this.hasCustomModelData()
+    if (!hasItemMeta())
+        return false
+
+    return itemMeta.hasCustomModelData()
 }
 
 fun Location.centralize(): Location {

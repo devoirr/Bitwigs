@@ -4,5 +4,6 @@ enum class InteractionType {
     PLACE,
     BREAK,
     STEP,
-    HIT
+    HIT,
+    DIG
 }

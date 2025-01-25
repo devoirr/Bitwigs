@@ -7,6 +7,7 @@ import dev.devoirr.bitwigs.core.chat.ChatManager
 import dev.devoirr.bitwigs.core.decoration.furniture.FurnitureManager
 import dev.devoirr.bitwigs.core.decoration.noteblocks.NoteblocksManager
 import dev.devoirr.bitwigs.core.economy.EconomyManager
+import dev.devoirr.bitwigs.core.frames.FramesManager
 import dev.devoirr.bitwigs.core.kits.KitsManager
 import dev.devoirr.bitwigs.core.warps.WarpsManager
 
@@ -22,6 +23,7 @@ class ModuleCenter {
     private var kitsManager: Loadable? = null
     private var furnitureManager: Loadable? = null
     private var noteblocksManager: Loadable? = null
+    private var framesManager: Loadable? = null
 
     fun loadModules() {
 
@@ -55,6 +57,10 @@ class ModuleCenter {
 
         if (plugin.config.getBoolean("noteblocks.enabled", false)) {
             noteblocksManager = tryLoad(NoteblocksManager())
+        }
+
+        if (plugin.config.getBoolean("frames.enabled", false)) {
+            framesManager = tryLoad(FramesManager())
         }
 
     }

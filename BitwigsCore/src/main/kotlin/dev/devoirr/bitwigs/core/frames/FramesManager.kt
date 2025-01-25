@@ -1,6 +1,7 @@
 package dev.devoirr.bitwigs.core.frames
 
 import dev.devoirr.bitwigs.core.database.DatabaseInfo
+import dev.devoirr.bitwigs.core.frames.listener.FramesListener
 import dev.devoirr.bitwigs.core.module.Loadable
 
 class FramesManager : Loadable {
@@ -11,8 +12,10 @@ class FramesManager : Loadable {
 
     lateinit var databaseInfo: DatabaseInfo
 
-    override fun onEnable() {
+    private val listener = FramesListener(this)
 
+    override fun onEnable() {
+        listener.register()
     }
 
     override fun onDisable() {
